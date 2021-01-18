@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:authentication_repository/authentication_repository.dart';
+import './app.dart';
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
+  runApp(App(
+    authenticationRepository: AuthenticationRepository(),
+  ));
 }

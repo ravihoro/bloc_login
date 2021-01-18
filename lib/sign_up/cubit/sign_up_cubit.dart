@@ -1,11 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 import '../../model/model.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit() : super(SignUpState());
+  SignUpCubit(this.authenticationRepository)
+      : assert(authenticationRepository != null),
+        super(SignUpState());
+
+  AuthenticationRepository authenticationRepository;
 
   void nameChanged(String value) {
     final name = Name.dirty(value);
@@ -64,7 +69,23 @@ class SignUpCubit extends Cubit<SignUpState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      // sign up code
+      bool val = authenticationRepository.signUp(
+          name: state.name.value,
+          email: state.email.value,
+          password: state.password.value);
+      print(val);
+      if (val) {
+        emit(state.copyWith(
+          // name: Name.pure(),
+          // email: Email.pure(),
+          // password: Password.pure(),
+          // confirmedPassword: ConfirmedPassword.pure(),
+          status: FormzStatus.submissionSuccess,
+        ));
+      } else {
+        emit(state.copyWith(
+            userPresent: true, status: FormzStatus.submissionFailure));
+      }
     } on Exception {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }

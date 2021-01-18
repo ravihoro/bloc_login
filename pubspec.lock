@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.3"
+  authentication_repository:
+    dependency: "direct main"
+    description:
+      path: "repositories/authentication_repository"
+      relative: true
+    source: path
+    version: "1.0.0"
   bloc:
     dependency: transitive
     description:

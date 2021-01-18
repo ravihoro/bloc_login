@@ -11,21 +11,22 @@ class User {
   static const empty = User(name: '', email: '', password: '');
 }
 
-class UserList {
-  List<User> _users = [];
+class UserModel {
+  static List<User> _users = [];
 
-  addUser(User user) {
+  static addUser(String name, String email, String password) {
+    User user = User(email: email, name: name, password: password);
     _users.add(user);
   }
 
-  bool checkUserExists(String email) {
+  static bool checkUserExists(String email) {
     for (User user in _users) {
       if (user.email == email) return true;
     }
     return false;
   }
 
-  User getUser(String email) {
+  static User getUser(String email) {
     for (User user in _users) {
       if (user.email == email) return user;
     }

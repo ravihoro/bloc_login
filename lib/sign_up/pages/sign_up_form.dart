@@ -1,4 +1,3 @@
-import 'package:bloc_login/model/password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/sign_up_cubit.dart';
@@ -9,10 +8,23 @@ class SignUpForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
+        String message = "";
         if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          if (state.userPresent) {
+            message = "Email already in use. Please login to continue";
+          } else {
+            message = "Sign Up Failure";
+          }
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Sign Up Failure'),
+            content: Text(message),
+          ));
+        }
+        if (state.status.isSubmissionSuccess) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          message = "Sign Up successful.Please login to continue.";
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(message),
           ));
         }
       },
@@ -36,6 +48,9 @@ class SignUpForm extends StatelessWidget {
             height: 8.0,
           ),
           _SignUpButton(),
+          const SizedBox(
+            height: 8.0,
+          ),
           GestureDetector(
             child: Text('Login'),
             onTap: () {},

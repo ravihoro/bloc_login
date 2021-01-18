@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.1
   flutter_bloc:
   formz:
+  authentication_repository:
+    path: repositories/authentication_repository
 
 dev_dependencies:
   flutter_test:

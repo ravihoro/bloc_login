@@ -6,6 +6,7 @@ class SignUpState {
   final Password password;
   final ConfirmedPassword confirmedPassword;
   final FormzStatus status;
+  final bool userPresent;
 
   const SignUpState({
     this.name = const Name.pure(),
@@ -13,6 +14,7 @@ class SignUpState {
     this.password = const Password.pure(),
     this.confirmedPassword = const ConfirmedPassword.pure(),
     this.status = FormzStatus.pure,
+    this.userPresent = false,
   });
 
   SignUpState copyWith({
@@ -21,6 +23,7 @@ class SignUpState {
     Password password,
     ConfirmedPassword confirmedPassword,
     FormzStatus status,
+    bool userPresent,
   }) {
     return SignUpState(
       name: name ?? this.name,
@@ -28,6 +31,7 @@ class SignUpState {
       password: password ?? this.password,
       confirmedPassword: confirmedPassword ?? this.confirmedPassword,
       status: status ?? this.status,
+      userPresent: userPresent ?? this.userPresent,
     );
   }
 }
