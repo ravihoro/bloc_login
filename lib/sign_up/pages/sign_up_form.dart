@@ -1,3 +1,4 @@
+import 'package:bloc_login/login/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/sign_up_cubit.dart';
@@ -51,10 +52,7 @@ class SignUpForm extends StatelessWidget {
           const SizedBox(
             height: 8.0,
           ),
-          GestureDetector(
-            child: Text('Login'),
-            onTap: () {},
-          ),
+          _LoginButton(),
         ],
       ),
     );
@@ -152,7 +150,7 @@ class _SignUpButton extends StatelessWidget {
         return state.status.isSubmissionInProgress
             ? CircularProgressIndicator()
             : RaisedButton(
-                key: const Key('signUpForm_continue_raisedButton'),
+                key: const Key('signUpForm_signUp_raisedButton'),
                 child: Text('Sign Up'),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
@@ -163,6 +161,19 @@ class _SignUpButton extends StatelessWidget {
                       }
                     : null,
               );
+      },
+    );
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Text('Login'),
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
       },
     );
   }

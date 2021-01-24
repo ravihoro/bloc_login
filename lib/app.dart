@@ -1,3 +1,4 @@
+import 'package:bloc_login/login/pages/login_page.dart';
 import 'package:bloc_login/sign_up/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:authentication_repository/authentication_repository.dart';
@@ -30,7 +31,7 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SignUpPage(),
+      home: LoginPage(),
     );
   }
 }
