@@ -17,6 +17,21 @@ class LoginForm extends StatelessWidget {
             ),
           ));
         }
+
+        if (state.status.isSubmissionSuccess) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          String message = "";
+          if (state.userPresent) {
+            message = "Login successful";
+          } else {
+            message = "User not found";
+          }
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              message,
+            ),
+          ));
+        }
       },
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -48,7 +63,7 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
-          onChanged: (value) => context.read<LoginCubit>().emailChanged(value),
+          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
           decoration: InputDecoration(
             labelText: 'Email',
             errorText: state.email.invalid ? 'Invalid email' : null,
@@ -67,8 +82,8 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (value) =>
-              context.read<LoginCubit>().passwordChanged(value),
+          onChanged: (password) =>
+              context.read<LoginCubit>().passwordChanged(password),
           decoration: InputDecoration(
             labelText: 'Password',
             errorText: state.password.invalid ? 'Invalid password' : null,
@@ -90,11 +105,13 @@ class _LoginButton extends StatelessWidget {
             : RaisedButton(
                 key: const Key('loginForm_login_raisedButton'),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text('Login'),
                 onPressed: state.status.isValidated
-                    ? context.read<LoginCubit>().loginFormSubmitted()
+                    ? () {
+                        context.read<LoginCubit>().loginFormSubmitted();
+                      }
                     : null,
               );
       },

@@ -9,11 +9,6 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[400],
-      // appBar: AppBar(
-      //     centerTitle: true,
-      //     title: Text(
-      //       'Sign Up',
-      //     )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocProvider<SignUpCubit>(

@@ -1,14 +1,19 @@
 import 'package:formz/formz.dart';
 import 'package:bloc/bloc.dart';
 import '../../model/model.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(LoginState());
+  LoginCubit(this.authenticationRepository)
+      : assert(authenticationRepository != null),
+        super(LoginState());
 
-  emailChanged(String value) {
-    Email email = Email.dirty(value);
+  AuthenticationRepository authenticationRepository;
+
+  void emailChanged(String value) {
+    final email = Email.dirty(value);
     emit(state.copyWith(
       email: email,
       status: Formz.validate([
@@ -18,8 +23,8 @@ class LoginCubit extends Cubit<LoginState> {
     ));
   }
 
-  passwordChanged(String value) {
-    Password password = Password.dirty(value);
+  void passwordChanged(String value) {
+    final password = Password.dirty(value);
     emit(state.copyWith(
       password: password,
       status: Formz.validate([
@@ -29,5 +34,20 @@ class LoginCubit extends Cubit<LoginState> {
     ));
   }
 
-  loginFormSubmitted() {}
+  loginFormSubmitted() {
+    if (!state.status.isValidated) return;
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      bool val = authenticationRepository.login(
+          email: state.email.value, password: state.password.value);
+
+      if (!val)
+        emit(state.copyWith(
+            userPresent: false, status: FormzStatus.submissionSuccess));
+      else
+        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on Exception {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    }
+  }
 }
