@@ -65,11 +65,11 @@ class SignUpCubit extends Cubit<SignUpState> {
     ));
   }
 
-  void signUpFormSubmitted() {
+  void signUpFormSubmitted() async {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      bool val = authenticationRepository.signUp(
+      bool val = await authenticationRepository.signUp(
           name: state.name.value,
           email: state.email.value,
           password: state.password.value);

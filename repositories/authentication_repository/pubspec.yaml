@@ -7,3 +7,4 @@ environment:
 
 dependencies:
   meta:
+  http:

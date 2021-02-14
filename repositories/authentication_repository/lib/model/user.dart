@@ -32,4 +32,12 @@ class UserModel {
     }
     return User.empty;
   }
+
+  static User fromJson(Map<String, dynamic> json) {
+    return User(
+      name: json['name'],
+      email: json['email'],
+      password: json['password'],
+    );
+  }
 }

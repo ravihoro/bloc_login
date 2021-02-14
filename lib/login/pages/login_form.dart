@@ -11,9 +11,9 @@ class LoginForm extends StatelessWidget {
       listeners: [
         BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            Scaffold.of(context).hideCurrentSnackBar();
             if (state.status.isSubmissionFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'Login Failed',
                 ),
@@ -21,7 +21,7 @@ class LoginForm extends StatelessWidget {
             }
             if (state.userPresent == false &&
                 state.status.isSubmissionSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'User not found. Please sign up to create account.',
                 ),
@@ -140,6 +140,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
+          obscureText: true,
           key: const Key('loginForm_passwordInput_textField'),
           onChanged: (password) =>
               context.read<LoginCubit>().passwordChanged(password),

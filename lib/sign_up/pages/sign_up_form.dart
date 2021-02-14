@@ -11,20 +11,20 @@ class SignUpForm extends StatelessWidget {
       listener: (context, state) {
         String message = "";
         if (state.status.isSubmissionFailure) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          Scaffold.of(context).hideCurrentSnackBar();
           if (state.userPresent) {
             message = "Email already in use. Please login to continue";
           } else {
             message = "Sign Up Failure";
           }
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(message),
           ));
         }
         if (state.status.isSubmissionSuccess) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          Scaffold.of(context).hideCurrentSnackBar();
           message = "Sign Up successful.Please login to continue.";
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(message),
           ));
         }
@@ -104,6 +104,7 @@ class _PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
+          obscureText: true,
           key: const Key('signUpForm_passwordInput_textField'),
           onChanged: (password) =>
               context.read<SignUpCubit>().passwordChanged(password),
@@ -125,6 +126,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
           previous.confirmedPassword != current.confirmedPassword,
       builder: (context, state) {
         return TextField(
+          obscureText: true,
           key: const Key('signUpForm_confirmPasswordInput_textField'),
           onChanged: (confirmPassword) => context
               .read<SignUpCubit>()
