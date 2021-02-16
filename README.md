@@ -19,4 +19,5 @@ Please refer to this link for code to the api for login and sign up: https://git
 - MongoDB
 
 ## Screenshots
-<img src = "screenshots/login_1.jpg" width = 250> <img src = "screenshots/login_2.jpg" width = 250>  <img src = "screenshots/login_3.jpg" width = 250> <img src = "screenshots/login_4.jpg" width = 250> <img src = "screenshots/login_5.jpg" width = 250>
+<img src = "screenshots/login_1.jpg" width = 250> <img src = "screenshots/login_2.jpg" width = 250>  <img src = "screenshots/login_3.jpg" width = 250> <img src = "screenshots/login_4.jpg" width = 250> <img src = "screenshots/login_5.jpg" width = 250><br><img src = "screenshots/login_6.jpg"><br>
+<img src = "screenshots/login_7.jpg">
