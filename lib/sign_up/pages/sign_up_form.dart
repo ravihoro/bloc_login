@@ -10,21 +10,21 @@ class SignUpForm extends StatelessWidget {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         String message = "";
-        if (state.status.isSubmissionFailure) {
-          Scaffold.of(context).hideCurrentSnackBar();
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           if (state.userPresent) {
             message = "Email already in use. Please login to continue";
           } else {
             message = "Sign Up Failure";
           }
-          Scaffold.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(message),
           ));
         }
-        if (state.status.isSubmissionSuccess) {
-          Scaffold.of(context).hideCurrentSnackBar();
+        if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           message = "Sign Up successful.Please login to continue.";
-          Scaffold.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(message),
           ));
         }
@@ -70,7 +70,7 @@ class _NameInput extends StatelessWidget {
           onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
           decoration: InputDecoration(
             labelText: 'Name',
-            errorText: state.name.invalid ? 'Invalid name' : null,
+            errorText: state.name.isNotValid ? 'Invalid name' : null,
           ),
         );
       },
@@ -89,7 +89,7 @@ class _EmailInput extends StatelessWidget {
           onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
           decoration: InputDecoration(
             labelText: 'Email',
-            errorText: state.email.invalid ? 'Invalid email' : null,
+            errorText: state.email.isNotValid ? 'Invalid email' : null,
           ),
         );
       },
@@ -110,7 +110,7 @@ class _PasswordInput extends StatelessWidget {
               context.read<SignUpCubit>().passwordChanged(password),
           decoration: InputDecoration(
             labelText: 'Password',
-            errorText: state.password.invalid ? 'Invalid password' : null,
+            errorText: state.password.isNotValid ? 'Invalid password' : null,
           ),
         );
       },
@@ -133,7 +133,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
               .confirmedPasswordChanged(confirmPassword),
           decoration: InputDecoration(
             labelText: 'Confirm Password',
-            errorText: state.confirmedPassword.invalid
+            errorText: state.confirmedPassword.isNotValid
                 ? 'Password and confirm password do not match'
                 : null,
           ),
@@ -149,15 +149,17 @@ class _SignUpButton extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isInProgress
             ? CircularProgressIndicator()
-            : RaisedButton(
+            : ElevatedButton(
                 key: const Key('signUpForm_signUp_raisedButton'),
                 child: Text('Sign Up'),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
-                onPressed: state.status.isValidated
+                onPressed: state.status.isSuccess
                     ? () {
                         context.read<SignUpCubit>().signUpFormSubmitted();
                       }
@@ -171,7 +173,7 @@ class _SignUpButton extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: Text('Login'),
       onPressed: () {
         Navigator.of(context)

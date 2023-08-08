@@ -21,7 +21,9 @@ class SignUpCubit extends Cubit<SignUpState> {
         state.email,
         state.password,
         state.confirmedPassword,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
@@ -34,7 +36,9 @@ class SignUpCubit extends Cubit<SignUpState> {
         email,
         state.password,
         state.confirmedPassword,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
@@ -47,7 +51,9 @@ class SignUpCubit extends Cubit<SignUpState> {
         state.email,
         password,
         state.confirmedPassword,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
@@ -61,13 +67,15 @@ class SignUpCubit extends Cubit<SignUpState> {
         state.email,
         state.password,
         confirmedPassword,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
   void signUpFormSubmitted() async {
-    if (!state.status.isValidated) return;
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    if (!state.status.isSuccess) return;
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       bool val = await authenticationRepository.signUp(
           name: state.name.value,
@@ -80,14 +88,14 @@ class SignUpCubit extends Cubit<SignUpState> {
           // email: Email.pure(),
           // password: Password.pure(),
           // confirmedPassword: ConfirmedPassword.pure(),
-          status: FormzStatus.submissionSuccess,
+          status: FormzSubmissionStatus.success,
         ));
       } else {
         emit(state.copyWith(
-            userPresent: true, status: FormzStatus.submissionFailure));
+            userPresent: true, status: FormzSubmissionStatus.failure));
       }
     } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
 }

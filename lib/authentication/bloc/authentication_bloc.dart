@@ -1,23 +1,22 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthenticationRepository _authenticationRepository;
+  final AuthenticationRepository authenticationRepository;
 
-  StreamSubscription<User> _userSubscription;
+  late StreamSubscription<User> _userSubscription;
 
   AuthenticationBloc(
-      {@required AuthenticationRepository authenticationRepository})
+      {required AuthenticationRepository authenticationRepository})
       : assert(authenticationRepository != null),
-        _authenticationRepository = authenticationRepository,
+        authenticationRepository = authenticationRepository,
         super(AuthenticationState.unknown()) {
-    _userSubscription = _authenticationRepository.user
+    _userSubscription = authenticationRepository.user
         .listen((user) => add(AuthenticationUserChanged(user)));
   }
 
@@ -27,7 +26,7 @@ class AuthenticationBloc
     if (event is AuthenticationUserChanged) {
       yield await _mapAuthenticatedUserChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      _authenticationRepository.logOut();
+      authenticationRepository.logOut();
     }
   }
 
@@ -41,7 +40,7 @@ class AuthenticationBloc
   @override
   Future<void> close() {
     _userSubscription.cancel();
-    _authenticationRepository.dispose();
+    authenticationRepository.dispose();
     return super.close();
   }
 }

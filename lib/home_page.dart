@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
-            return FlatButton(
+            return TextButton(
               child: Text('Logout'),
               onPressed: () {
                 context

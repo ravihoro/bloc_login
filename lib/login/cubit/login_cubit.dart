@@ -19,7 +19,9 @@ class LoginCubit extends Cubit<LoginState> {
       status: Formz.validate([
         email,
         state.password,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
@@ -30,13 +32,15 @@ class LoginCubit extends Cubit<LoginState> {
       status: Formz.validate([
         state.email,
         password,
-      ]),
+      ])
+          ? FormzSubmissionStatus.success
+          : FormzSubmissionStatus.failure,
     ));
   }
 
   loginFormSubmitted() async {
-    if (!state.status.isValidated) return;
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    if (!state.status.isSuccess) return;
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       //emit(state.copyWith(status: FormzStatus.submissionSuccess));
       bool val = await authenticationRepository.login(
@@ -44,10 +48,10 @@ class LoginCubit extends Cubit<LoginState> {
       //print("Value of val is $val");
       if (!val) {
         emit(state.copyWith(
-            userPresent: false, status: FormzStatus.submissionSuccess));
+            userPresent: false, status: FormzSubmissionStatus.success));
       }
     } on Exception {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
 }

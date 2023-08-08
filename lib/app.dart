@@ -11,8 +11,8 @@ class App extends StatelessWidget {
   final AuthenticationRepository authenticationRepository;
 
   App({
-    Key key,
-    @required this.authenticationRepository,
+    Key? key,
+    required this.authenticationRepository,
   })  : assert(authenticationRepository != null),
         super(key: key);
 
@@ -38,7 +38,7 @@ class AppView extends StatefulWidget {
 class _AppViewState extends State<AppView> {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState;
+  NavigatorState get _navigator => _navigatorKey.currentState as NavigatorState;
 
   @override
   Widget build(BuildContext context) {

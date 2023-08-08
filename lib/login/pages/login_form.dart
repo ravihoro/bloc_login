@@ -11,17 +11,16 @@ class LoginForm extends StatelessWidget {
       listeners: [
         BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
-            Scaffold.of(context).hideCurrentSnackBar();
-            if (state.status.isSubmissionFailure) {
-              Scaffold.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            if (state.status.isFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'Login Failed',
                 ),
               ));
             }
-            if (state.userPresent == false &&
-                state.status.isSubmissionSuccess) {
-              Scaffold.of(context).showSnackBar(SnackBar(
+            if (state.userPresent == false && state.status.isSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                   'User not found. Please sign up to create account.',
                 ),
@@ -125,7 +124,7 @@ class _EmailInput extends StatelessWidget {
           onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
           decoration: InputDecoration(
             labelText: 'Email',
-            errorText: state.email.invalid ? 'Invalid email' : null,
+            errorText: state.email.isNotValid ? 'Invalid email' : null,
           ),
         );
       },
@@ -146,7 +145,7 @@ class _PasswordInput extends StatelessWidget {
               context.read<LoginCubit>().passwordChanged(password),
           decoration: InputDecoration(
             labelText: 'Password',
-            errorText: state.password.invalid ? 'Invalid password' : null,
+            errorText: state.password.isNotValid ? 'Invalid password' : null,
           ),
         );
       },
@@ -160,15 +159,17 @@ class _LoginButton extends StatelessWidget {
     return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
+        return state.status.isSuccess
             ? CircularProgressIndicator()
-            : RaisedButton(
+            : ElevatedButton(
                 key: const Key('loginForm_login_raisedButton'),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                 ),
                 child: Text('Login'),
-                onPressed: state.status.isValidated
+                onPressed: state.status.isFailure
                     ? () {
                         context.read<LoginCubit>().loginFormSubmitted();
                       }
@@ -182,7 +183,7 @@ class _LoginButton extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton(
       child: Text('Sign Up'),
       onPressed: () {
         Navigator.of(context)

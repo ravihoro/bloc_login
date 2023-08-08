@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
-final url = "http://192.168.0.6:3000";
+final url = "http://192.168.29.89:3000";
 
 class AuthenticationRepository {
   final _userController = StreamController<User>();
@@ -32,8 +32,10 @@ class AuthenticationRepository {
   //   return userPresent;
   // }
 
-  Future<bool> login(
-      {@required String email, @required String password}) async {
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
     var response;
     try {
       Map data = {
@@ -44,7 +46,7 @@ class AuthenticationRepository {
       String body = jsonEncode(data);
 
       response = await http.post(
-        url + "/login",
+        Uri.parse(url + "/login"),
         headers: {"Content-Type": "application/json"},
         body: body,
       );
@@ -68,9 +70,9 @@ class AuthenticationRepository {
   }
 
   Future<bool> signUp({
-    @required String name,
-    @required String email,
-    @required String password,
+    required String name,
+    required String email,
+    required String password,
   }) async {
     // print(name);
     // print(email);
@@ -88,7 +90,7 @@ class AuthenticationRepository {
       String body = jsonEncode(data);
 
       response = await http.post(
-        url + "/signup",
+        Uri.parse(url + "/signup"),
         headers: {"Content-Type": "application/json"},
         body: body,
       );

@@ -4,20 +4,20 @@ class LoginState {
   final Email email;
   final Password password;
   final bool userPresent;
-  final FormzStatus status;
+  final FormzSubmissionStatus status;
 
   const LoginState({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.userPresent = true,
-    this.status = FormzStatus.pure,
+    this.status = FormzSubmissionStatus.initial,
   });
 
   LoginState copyWith({
-    Email email,
-    Password password,
-    bool userPresent,
-    FormzStatus status,
+    Email? email,
+    Password? password,
+    bool? userPresent,
+    FormzSubmissionStatus? status,
   }) {
     return LoginState(
       email: email ?? this.email,

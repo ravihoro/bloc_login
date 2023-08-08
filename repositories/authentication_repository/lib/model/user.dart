@@ -5,8 +5,11 @@ class User {
   final String email;
   final String password;
 
-  const User(
-      {@required this.name, @required this.email, @required this.password});
+  const User({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
 
   static const empty = User(name: '', email: '', password: '');
 }
