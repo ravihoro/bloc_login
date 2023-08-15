@@ -2,22 +2,26 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/model/user_model.dart';
 
-class SignUpState extends Equatable {
+class LoginState extends Equatable {
   final bool isLoading;
   final User? user;
   final String errorString;
 
-  const SignUpState({this.isLoading = false, this.user, this.errorString = ''});
+  const LoginState({
+    this.isLoading = false,
+    this.user,
+    this.errorString = '',
+  });
 
-  SignUpState copyWith({
+  LoginState copyWith({
     bool? isLoading,
     User? user,
     String? errorString,
   }) {
-    return SignUpState(
+    return LoginState(
       isLoading: isLoading ?? this.isLoading,
       user: user,
-      errorString: errorString ?? '',
+      errorString: errorString ?? this.errorString,
     );
   }
 

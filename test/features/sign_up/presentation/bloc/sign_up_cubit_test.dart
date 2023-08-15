@@ -19,11 +19,13 @@ void main() {
   String email = "ravi.horo@gmail.com";
   String password = "Ravi@1234";
 
+  User user = User(
+    username: username,
+    email: email,
+  );
+
   Either<Failure, User> successfulSignUp = Right(
-    User(
-      username: username,
-      email: email,
-    ),
+    user,
   );
 
   var signUpFailure = const SignUpFailure();
@@ -44,9 +46,9 @@ void main() {
     },
     expect: () => [
       const SignUpState(isLoading: true),
-      const SignUpState(
+      SignUpState(
         isLoading: false,
-        isSignUpSuccessful: true,
+        user: user,
       ),
     ],
   );
@@ -65,7 +67,7 @@ void main() {
     },
     expect: () => [
       const SignUpState(isLoading: true),
-      SignUpState(isLoading: false, error: signUpFailure.error),
+      SignUpState(isLoading: false, errorString: signUpFailure.error),
     ],
   );
 
@@ -83,7 +85,7 @@ void main() {
     },
     expect: () => [
       const SignUpState(isLoading: true),
-      SignUpState(isLoading: false, error: serverFailure.error),
+      SignUpState(isLoading: false, errorString: serverFailure.error),
     ],
   );
 
@@ -101,7 +103,7 @@ void main() {
     },
     expect: () => [
       const SignUpState(isLoading: true),
-      SignUpState(isLoading: false, error: failure.error),
+      SignUpState(isLoading: false, errorString: failure.error),
     ],
   );
 }

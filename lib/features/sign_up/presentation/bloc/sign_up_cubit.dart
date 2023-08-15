@@ -28,12 +28,14 @@ class SignUpCubit extends Cubit<SignUpState> {
     either.fold(
       (l) => emit(state.copyWith(
         isLoading: false,
-        isSignUpSuccessful: false,
-        error: l.error,
+        errorString: l.error,
       )),
       (r) => emit(state.copyWith(
         isLoading: false,
-        isSignUpSuccessful: true,
+        user: User(
+          email: r.email,
+          username: r.username,
+        ),
       )),
     );
   }
