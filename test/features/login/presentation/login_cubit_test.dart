@@ -1,5 +1,6 @@
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/core/model/user_model.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/login/domain/usecase/login_usecase.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_cubit.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
@@ -17,7 +18,12 @@ void main() {
   String email = "ravi.horo@gmail.com";
   String password = "Ravi@1234";
 
-  User user = User(email: email, username: username);
+  User user = User(
+    email: email,
+    name: username,
+    id: "",
+    password: "",
+  );
   var loginFailure = const LoginFailure();
   var serverFailure = const ServerFailure();
   var failure = const GenericFailure();

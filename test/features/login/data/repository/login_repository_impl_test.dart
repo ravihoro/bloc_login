@@ -1,7 +1,8 @@
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/core/model/user_model.dart';
-import 'package:bloc_login/features/login/data/datasource/login_data_source.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
+import 'package:bloc_login/features/login/data/data_source/login_data_source.dart';
 import 'package:bloc_login/features/login/data/repository/login_repository_impl.dart';
 import 'package:bloc_login/features/login/domain/repository/login_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -19,7 +20,7 @@ void main() {
   String email = "ravi.horo@gmail.com";
   String password = "Ravi@1234";
 
-  User user = User(email: email, username: username);
+  User user = User(email: email, name: username, id: "", password: "");
   Either<Failure, User> loginFailure = Left(LoginFailure());
   Either<Failure, User> serverFailure = Left(ServerFailure());
   Either<Failure, User> genericFailure = Left(GenericFailure());
