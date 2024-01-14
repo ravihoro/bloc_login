@@ -1,4 +1,5 @@
 import 'package:bloc_login/core/model/user_model.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:http/http.dart' as http;
 
 abstract class LoginDataSource {

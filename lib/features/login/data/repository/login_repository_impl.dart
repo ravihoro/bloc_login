@@ -1,7 +1,8 @@
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/model/user_model.dart';
 import 'package:bloc_login/core/error/failure.dart';
-import 'package:bloc_login/features/login/data/datasource/login_data_source.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
+import 'package:bloc_login/features/login/data/data_source/login_data_source.dart';
 import 'package:bloc_login/features/login/domain/repository/login_repository.dart';
 import 'package:dartz/dartz.dart';
 

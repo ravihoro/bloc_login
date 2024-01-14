@@ -1,3 +1,4 @@
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/model/user_model.dart';

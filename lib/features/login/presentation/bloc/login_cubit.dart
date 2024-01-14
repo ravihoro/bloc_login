@@ -1,4 +1,5 @@
 import 'package:bloc_login/core/model/user_model.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/login/domain/usecase/login_usecase.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
 
@@ -26,8 +27,10 @@ class LoginCubit extends Cubit<LoginState> {
         state.copyWith(
           isLoading: false,
           user: User(
+            id: "",
+            password: "",
             email: r.email,
-            username: r.username,
+            name: "",
           ),
         ),
       ),

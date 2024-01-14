@@ -1,5 +1,6 @@
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/core/model/user_model.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/sign_up/domain/usecase/sign_up_usecase.dart';
 import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_state.dart';
 import 'package:dartz/dartz.dart';
@@ -33,8 +34,10 @@ class SignUpCubit extends Cubit<SignUpState> {
       (r) => emit(state.copyWith(
         isLoading: false,
         user: User(
+          id: "",
+          password: "",
           email: r.email,
-          username: r.username,
+          name: "",
         ),
       )),
     );
