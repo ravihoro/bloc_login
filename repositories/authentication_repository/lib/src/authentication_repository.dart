@@ -1,12 +1,11 @@
 import 'dart:convert';
 import '../model/user.dart';
-import 'package:meta/meta.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
-final url = "http://192.168.29.89:3000";
+final url = "http://192.168.29.163:3000";
 
 class AuthenticationRepository {
   final _userController = StreamController<User>();

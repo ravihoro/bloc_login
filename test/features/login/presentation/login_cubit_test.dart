@@ -1,17 +1,14 @@
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/core/model/user_model.dart';
-import 'package:bloc_login/features/login/domain/repository/login_repository.dart';
 import 'package:bloc_login/features/login/domain/usecase/login_usecase.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_cubit.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'login_cubit_test.mocks.dart';
+class MockLoginUseCase extends Mock implements LoginUseCase {}
 
-@GenerateMocks([LoginUseCase])
 void main() {
   MockLoginUseCase usecase = MockLoginUseCase();
   LoginCubit loginCubit = LoginCubit(useCase: usecase);
@@ -29,12 +26,12 @@ void main() {
     "should be a successful login",
     build: () => loginCubit,
     act: (loginCubit) {
-      when(usecase.login(email: email, password: password))
+      when(() => usecase.login(email: email, password: password))
           .thenAnswer((_) async => Right(user));
 
       loginCubit.login(email: email, password: password);
 
-      verify(usecase.login(email: email, password: password));
+      verify(() => usecase.login(email: email, password: password));
     },
     expect: (() => [
           const LoginState(isLoading: true),
@@ -46,12 +43,12 @@ void main() {
     "should be a failed login",
     build: () => loginCubit,
     act: (loginCubit) {
-      when(usecase.login(email: email, password: password))
+      when(() => usecase.login(email: email, password: password))
           .thenAnswer((_) async => Left(loginFailure));
 
       loginCubit.login(email: email, password: password);
 
-      verify(usecase.login(email: email, password: password));
+      verify(() => usecase.login(email: email, password: password));
     },
     expect: (() => [
           const LoginState(isLoading: true),
@@ -66,12 +63,12 @@ void main() {
     "should be a server exception",
     build: () => loginCubit,
     act: (loginCubit) {
-      when(usecase.login(email: email, password: password))
+      when(() => usecase.login(email: email, password: password))
           .thenAnswer((_) async => Left(serverFailure));
 
       loginCubit.login(email: email, password: password);
 
-      verify(usecase.login(email: email, password: password));
+      verify(() => usecase.login(email: email, password: password));
     },
     expect: (() => [
           const LoginState(isLoading: true),
@@ -86,12 +83,12 @@ void main() {
     "should be an exception",
     build: () => loginCubit,
     act: (loginCubit) {
-      when(usecase.login(email: email, password: password))
+      when(() => usecase.login(email: email, password: password))
           .thenAnswer((_) async => Left(failure));
 
       loginCubit.login(email: email, password: password);
 
-      verify(usecase.login(email: email, password: password));
+      verify(() => usecase.login(email: email, password: password));
     },
     expect: (() => [
           const LoginState(isLoading: true),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_login/home_page.dart';
 import 'package:bloc_login/login/pages/login_page.dart';
 import 'package:bloc_login/splash.dart';
@@ -13,8 +15,7 @@ class App extends StatelessWidget {
   App({
     Key? key,
     required this.authenticationRepository,
-  })  : assert(authenticationRepository != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _AppViewState extends State<AppView> {
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
-            //print("User is: ${state.user == User.empty}");
+            log("User is: ${state.user == User.empty}");
             if (state.user == User.empty) {
               _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(), (route) => false);

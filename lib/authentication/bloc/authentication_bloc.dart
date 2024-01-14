@@ -9,37 +9,25 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthenticationRepository authenticationRepository;
 
-  late StreamSubscription<User> _userSubscription;
+  //late StreamSubscription<User> _userSubscription;
 
-  AuthenticationBloc(
-      {required AuthenticationRepository authenticationRepository})
-      : assert(authenticationRepository != null),
-        authenticationRepository = authenticationRepository,
-        super(AuthenticationState.unknown()) {
-    _userSubscription = authenticationRepository.user
-        .listen((user) => add(AuthenticationUserChanged(user)));
-  }
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event) async* {
-    if (event is AuthenticationUserChanged) {
-      yield await _mapAuthenticatedUserChangedToState(event);
-    } else if (event is AuthenticationLogoutRequested) {
-      authenticationRepository.logOut();
-    }
-  }
-
-  Future<AuthenticationState> _mapAuthenticatedUserChangedToState(
-      AuthenticationUserChanged event) async {
-    return event.user != User.empty
-        ? AuthenticationState.authenticated(event.user)
-        : const AuthenticationState.unauthenticated();
+  AuthenticationBloc({
+    required this.authenticationRepository,
+  }) : super(AuthenticationState.unknown()) {
+    // _userSubscription = authenticationRepository.user
+    //     .listen((user) => add(AuthenticationUserChanged(user)));
+    on((event, emit) async* {
+      if (event is AuthenticationUserChanged) {
+        emit(AuthenticationState.authenticated(event.user));
+      } else if (event is AuthenticationLogoutRequested) {
+        authenticationRepository.logOut();
+      }
+    });
   }
 
   @override
   Future<void> close() {
-    _userSubscription.cancel();
+    //_userSubscription.cancel();
     authenticationRepository.dispose();
     return super.close();
   }

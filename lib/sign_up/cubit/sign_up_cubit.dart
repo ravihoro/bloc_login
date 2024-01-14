@@ -6,9 +6,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this.authenticationRepository)
-      : assert(authenticationRepository != null),
-        super(SignUpState());
+  SignUpCubit(this.authenticationRepository) : super(SignUpState());
 
   AuthenticationRepository authenticationRepository;
 

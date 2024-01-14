@@ -5,12 +5,10 @@ import 'package:bloc_login/features/sign_up/data/datasource/sign_up_data_source.
 import 'package:bloc_login/features/sign_up/data/repository/sign_up_repository_impl.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'sign_up_repository_impl_test.mocks.dart';
+class MockSignUpDataSource extends Mock implements SignUpDataSource {}
 
-@GenerateMocks([SignUpDataSource])
 void main() {
   MockSignUpDataSource signUpDataSource = MockSignUpDataSource();
 
@@ -30,16 +28,16 @@ void main() {
   test(
     'should be a successful sign up',
     () async {
-      when(signUpDataSource.signUp(
-        username: username,
-        email: email,
-        password: password,
-      )).thenAnswer((_) async => successfulSignUp);
+      when(() => signUpDataSource.signUp(
+            username: username,
+            email: email,
+            password: password,
+          )).thenAnswer((_) async => successfulSignUp);
 
       Either<Failure, User> either = await signUpRepository.signUp(
           username: username, email: email, password: password);
 
-      verify(signUpDataSource.signUp(
+      verify(() => signUpDataSource.signUp(
           username: username, email: email, password: password));
 
       expect(either, Right(successfulSignUp));
@@ -49,14 +47,15 @@ void main() {
   test(
     'should be a failed sign up',
     () async {
-      when(signUpDataSource.signUp(
-              username: username, email: email, password: password))
-          .thenAnswer((_) async => throw SignUpException());
+      when(() => signUpDataSource.signUp(
+          username: username,
+          email: email,
+          password: password)).thenAnswer((_) async => throw SignUpException());
 
       var either = await signUpRepository.signUp(
           username: username, email: email, password: password);
 
-      verify(signUpDataSource.signUp(
+      verify(() => signUpDataSource.signUp(
           username: username, email: email, password: password));
 
       expect(either, signUpFailure);
@@ -66,14 +65,14 @@ void main() {
   test(
     'should be a server exception',
     () async {
-      when(signUpDataSource.signUp(
+      when(() => signUpDataSource.signUp(
               username: username, email: email, password: password))
           .thenAnswer((realInvocation) async => throw ServerException());
 
       var either = await signUpRepository.signUp(
           username: username, email: email, password: password);
 
-      verify(signUpDataSource.signUp(
+      verify(() => signUpDataSource.signUp(
           username: username, email: email, password: password));
 
       expect(either, serverFailure);
@@ -83,14 +82,14 @@ void main() {
   test(
     'should be a generic exception',
     () async {
-      when(signUpDataSource.signUp(
+      when(() => signUpDataSource.signUp(
               username: username, email: email, password: password))
           .thenAnswer((realInvocation) async => throw Exception());
 
       var either = await signUpRepository.signUp(
           username: username, email: email, password: password);
 
-      verify(signUpDataSource.signUp(
+      verify(() => signUpDataSource.signUp(
           username: username, email: email, password: password));
 
       expect(either, genericFailure);

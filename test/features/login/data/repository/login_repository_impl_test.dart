@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/core/model/user_model.dart';
@@ -8,12 +6,10 @@ import 'package:bloc_login/features/login/data/repository/login_repository_impl.
 import 'package:bloc_login/features/login/domain/repository/login_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'login_repository_impl_test.mocks.dart';
+class MockLoginDataSource extends Mock implements LoginDataSource {}
 
-@GenerateMocks([LoginDataSource])
 void main() {
   MockLoginDataSource dataSource = MockLoginDataSource();
 
@@ -31,12 +27,12 @@ void main() {
   test(
     'should be a successful login',
     () async {
-      when(dataSource.login(email: email, password: password))
+      when(() => dataSource.login(email: email, password: password))
           .thenAnswer((_) async => user);
 
       var either = await repository.login(email: email, password: password);
 
-      verify(dataSource.login(email: email, password: password));
+      verify(() => dataSource.login(email: email, password: password));
 
       expect(either, Right(user));
     },
@@ -45,12 +41,12 @@ void main() {
   test(
     'should be a login failure',
     () async {
-      when(dataSource.login(email: email, password: password))
+      when(() => dataSource.login(email: email, password: password))
           .thenAnswer((_) async => throw LoginException());
 
       var either = await repository.login(email: email, password: password);
 
-      verify(dataSource.login(email: email, password: password));
+      verify(() => dataSource.login(email: email, password: password));
 
       expect(either, loginFailure);
     },
@@ -59,12 +55,12 @@ void main() {
   test(
     'should be a server failure',
     () async {
-      when(dataSource.login(email: email, password: password))
+      when(() => dataSource.login(email: email, password: password))
           .thenAnswer((_) async => throw ServerException());
 
       var either = await repository.login(email: email, password: password);
 
-      verify(dataSource.login(email: email, password: password));
+      verify(() => dataSource.login(email: email, password: password));
 
       expect(either, serverFailure);
     },
@@ -73,12 +69,12 @@ void main() {
   test(
     'should be a  failure',
     () async {
-      when(dataSource.login(email: email, password: password))
+      when(() => dataSource.login(email: email, password: password))
           .thenAnswer((_) async => throw Exception());
 
       var either = await repository.login(email: email, password: password);
 
-      verify(dataSource.login(email: email, password: password));
+      verify(() => dataSource.login(email: email, password: password));
 
       expect(either, genericFailure);
     },

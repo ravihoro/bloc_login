@@ -1,3 +1,5 @@
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:bloc_login/app.dart';
 import 'package:bloc_login/core/utils/injection_container.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'bloc login',
-      home: Container(),
+      home: App(
+        authenticationRepository: AuthenticationRepository(),
+      ),
     );
   }
 }
