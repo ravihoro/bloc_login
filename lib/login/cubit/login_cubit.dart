@@ -1,7 +1,7 @@
+import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:formz/formz.dart';
 import 'package:bloc/bloc.dart';
 import '../../model/model.dart';
-import 'package:authentication_repository/authentication_repository.dart';
 
 part 'login_state.dart';
 
@@ -41,13 +41,13 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       //emit(state.copyWith(status: FormzStatus.submissionSuccess));
-      bool val = await authenticationRepository.login(
-          email: state.email.value, password: state.password.value);
-      //print("Value of val is $val");
-      if (!val) {
-        emit(state.copyWith(
-            userPresent: false, status: FormzSubmissionStatus.success));
-      }
+      // bool val = await authenticationRepository.login(
+      //     email: state.email.value, password: state.password.value);
+      // //print("Value of val is $val");
+      // if (!val) {
+      //   emit(state.copyWith(
+      //       userPresent: false, status: FormzSubmissionStatus.success));
+      // }
     } on Exception {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }

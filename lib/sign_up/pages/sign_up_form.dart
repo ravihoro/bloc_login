@@ -161,7 +161,7 @@ class _SignUpButton extends StatelessWidget {
                 ),
                 onPressed: state.status.isSuccess
                     ? () {
-                        context.read<SignUpCubit>().signUpFormSubmitted();
+                        //context.read<SignUpCubit>().signUpFormSubmitted();
                       }
                     : null,
               );

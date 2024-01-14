@@ -1,4 +1,4 @@
-import 'package:bloc_login/features/sign_up/data/datasource/sign_up_data_source.dart';
+import 'package:bloc_login/features/sign_up/data/data_source/sign_up_data_source.dart';
 import 'package:bloc_login/features/sign_up/data/repository/sign_up_repository_impl.dart';
 import 'package:bloc_login/features/sign_up/domain/usecase/sign_up_usecase.dart';
 import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_cubit.dart';

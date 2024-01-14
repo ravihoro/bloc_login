@@ -1,5 +1,5 @@
+import 'package:bloc_login/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:flutter/material.dart';
-import './authentication/bloc/authentication_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,16 +11,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            return TextButton(
-              child: Text('Logout'),
-              onPressed: () {
-                context
-                    .read<AuthenticationBloc>()
-                    .add(AuthenticationLogoutRequested());
-              },
-            );
+        child: TextButton(
+          child: Text('Logout'),
+          onPressed: () {
+            context.read<AuthenticationCubit>();
           },
         ),
       ),

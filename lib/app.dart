@@ -1,13 +1,14 @@
 import 'dart:developer';
 
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
+import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:bloc_login/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:bloc_login/home_page.dart';
 import 'package:bloc_login/login/pages/login_page.dart';
 import 'package:bloc_login/splash.dart';
 //import 'package:bloc_login/sign_up/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import './authentication/bloc/authentication_bloc.dart';
 
 class App extends StatelessWidget {
   final AuthenticationRepository authenticationRepository;
@@ -21,10 +22,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: authenticationRepository,
-      child: BlocProvider<AuthenticationBloc>(
-        create: (_) => AuthenticationBloc(
-          authenticationRepository: authenticationRepository,
-        ),
+      child: BlocProvider<AuthenticationCubit>(
+        create: (_) => AuthenticationCubit(),
         child: AppView(),
       ),
     );
@@ -46,7 +45,7 @@ class _AppViewState extends State<AppView> {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
+        return BlocListener<AuthenticationCubit, AuthenticationState>(
           listener: (context, state) {
             log("User is: ${state.user == User.empty}");
             if (state.user == User.empty) {

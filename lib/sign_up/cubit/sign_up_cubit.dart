@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:formz/formz.dart';
 import '../../model/model.dart';
-import 'package:authentication_repository/authentication_repository.dart';
 
 part 'sign_up_state.dart';
 
@@ -71,29 +71,29 @@ class SignUpCubit extends Cubit<SignUpState> {
     ));
   }
 
-  void signUpFormSubmitted() async {
-    if (!state.status.isSuccess) return;
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    try {
-      bool val = await authenticationRepository.signUp(
-          name: state.name.value,
-          email: state.email.value,
-          password: state.password.value);
-      print(val);
-      if (val) {
-        emit(state.copyWith(
-          // name: Name.pure(),
-          // email: Email.pure(),
-          // password: Password.pure(),
-          // confirmedPassword: ConfirmedPassword.pure(),
-          status: FormzSubmissionStatus.success,
-        ));
-      } else {
-        emit(state.copyWith(
-            userPresent: true, status: FormzSubmissionStatus.failure));
-      }
-    } on Exception {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
-    }
-  }
+  // void signUpFormSubmitted() async {
+  //   if (!state.status.isSuccess) return;
+  //   emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+  //   try {
+  //     bool val = await authenticationRepository.signUp(
+  //         name: state.name.value,
+  //         email: state.email.value,
+  //         password: state.password.value);
+  //     print(val);
+  //     if (val) {
+  //       emit(state.copyWith(
+  //         // name: Name.pure(),
+  //         // email: Email.pure(),
+  //         // password: Password.pure(),
+  //         // confirmedPassword: ConfirmedPassword.pure(),
+  //         status: FormzSubmissionStatus.success,
+  //       ));
+  //     } else {
+  //       emit(state.copyWith(
+  //           userPresent: true, status: FormzSubmissionStatus.failure));
+  //     }
+  //   } on Exception {
+  //     emit(state.copyWith(status: FormzSubmissionStatus.failure));
+  //   }
+  // }
 }

@@ -1,6 +1,8 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc_login/app.dart';
 import 'package:bloc_login/core/utils/injection_container.dart';
+import 'package:bloc_login/features/authentication/data/data_source/authentication_data_source.dart';
+import 'package:bloc_login/features/authentication/data/repository/authentication_repository_impl.dart';
+import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -20,9 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'bloc login',
-      home: App(
-        authenticationRepository: AuthenticationRepository(),
-      ),
+      // home: App(
+      //   authenticationRepository: AuthenticationRepositoryImpl(
+      //     AuthenticationDataSourceImpl(),
+      //   ),
+      // ),
     );
   }
 }

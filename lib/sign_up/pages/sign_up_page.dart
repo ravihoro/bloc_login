@@ -1,5 +1,6 @@
+import 'package:bloc_login/features/authentication/data/repository/authentication_repository_impl.dart';
+import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:authentication_repository/authentication_repository.dart';
 import '../cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 import 'sign_up_form.dart';

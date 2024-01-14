@@ -1,4 +1,5 @@
 import 'package:bloc_login/core/model/user_model.dart';
+import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:equatable/equatable.dart';
 
 class ResponseModel extends Equatable {
@@ -12,17 +13,17 @@ class ResponseModel extends Equatable {
     this.user,
   });
 
-  factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
-        success: json["success"],
-        message: json["message"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-      );
+  // factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
+  //       success: json["success"],
+  //       message: json["message"],
+  //       user: json["user"] == null ? null : User.fromJson(json["user"]),
+  //     );
 
-  Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "user": user?.toJson(),
-      };
+  // Map<String, dynamic> toJson() => {
+  //       "success": success,
+  //       "message": message,
+  //       "user": user?.toJson(),
+  //     };
 
   @override
   List<Object?> get props => [
