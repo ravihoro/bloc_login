@@ -1,5 +1,22 @@
-class ServerException implements Exception {}
+import 'package:equatable/equatable.dart';
 
-class LoginException implements Exception {}
+abstract class CustomException extends Equatable implements Exception {
+  final String message;
 
-class SignUpException implements Exception {}
+  const CustomException({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class ServerException extends CustomException {
+  const ServerException({super.message = ""});
+}
+
+class LoginException extends CustomException {
+  const LoginException({super.message = ""});
+}
+
+class SignUpException extends CustomException {
+  const SignUpException({super.message = ""});
+}
