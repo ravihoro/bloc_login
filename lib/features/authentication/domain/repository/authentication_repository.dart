@@ -7,4 +7,10 @@ abstract class AuthenticationRepository {
     required String email,
     required String password,
   });
+
+  Future<Either<Failure, User>> signUp({
+    required String name,
+    required String email,
+    required String password,
+  });
 }
