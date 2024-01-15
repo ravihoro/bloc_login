@@ -11,9 +11,9 @@ abstract class AuthenticationDataSource {
 }
 
 class AuthenticationDataSourceImpl implements AuthenticationDataSource {
-  final http.Client client;
+  final http.Client _client;
 
-  const AuthenticationDataSourceImpl(this.client);
+  const AuthenticationDataSourceImpl(this._client);
 
   @override
   Future<UserModel> login({
@@ -21,7 +21,7 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
     required String password,
   }) async {
     final apiUrl = "http://localhost:3000/login";
-    final response = await client.post(
+    final response = await _client.post(
       Uri.parse(apiUrl),
       body: jsonEncode(
         {
@@ -45,7 +45,7 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
     required String name,
   }) async {
     final apiUrl = "http://localhost:3000/signUp";
-    final response = await client.post(
+    final response = await _client.post(
       Uri.parse(apiUrl),
       body: jsonEncode(
         {
