@@ -47,7 +47,7 @@ void main() {
         'should be a login failure',
         () async {
           when(() => dataSource.login(email: email, password: password))
-              .thenAnswer((_) => throw LoginException());
+              .thenThrow(LoginException());
 
           var response =
               await repository.login(email: email, password: password);
@@ -60,7 +60,7 @@ void main() {
         'should be a server failure',
         () async {
           when(() => dataSource.login(email: email, password: password))
-              .thenAnswer((invocation) => throw ServerException());
+              .thenThrow(ServerException());
 
           var response =
               await repository.login(email: email, password: password);
@@ -73,7 +73,7 @@ void main() {
         'should be a generic failure',
         () async {
           when(() => dataSource.login(email: email, password: password))
-              .thenAnswer((invocation) => throw Exception());
+              .thenThrow(Exception());
 
           var response =
               await repository.login(email: email, password: password);
@@ -108,7 +108,7 @@ void main() {
           when(() => dataSource.signUp(
               email: email,
               password: password,
-              name: name)).thenAnswer((invocation) => throw SignUpException());
+              name: name)).thenThrow(SignUpException());
 
           var response = await repository.signUp(
               name: name, email: email, password: password);
@@ -123,7 +123,7 @@ void main() {
           when(() => dataSource.signUp(
               email: email,
               password: password,
-              name: name)).thenAnswer((invocation) => throw ServerException());
+              name: name)).thenThrow(ServerException());
 
           var response = await repository.signUp(
               name: name, email: email, password: password);
@@ -138,7 +138,7 @@ void main() {
           when(() => dataSource.signUp(
               email: email,
               password: password,
-              name: name)).thenAnswer((invocation) => throw GenericFailure());
+              name: name)).thenThrow(Exception());
 
           var response = await repository.signUp(
               name: name, email: email, password: password);
