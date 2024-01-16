@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_login/features/authentication/domain/entity/user.dart';
+import 'package:bloc_login/features/authentication/domain/usecase/login.dart';
+import 'package:bloc_login/features/authentication/domain/usecase/sign_up.dart';
 import 'package:equatable/equatable.dart';
 
 part 'authentication_state.dart';
@@ -7,11 +9,40 @@ part 'authentication_state.dart';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final AuthenticationState? initialState;
 
+  final Login _login;
+  final SignUp _signUp;
+
   AuthenticationCubit({
     this.initialState,
-  }) : super(initialState ?? AuthenticationState(user: User.empty));
+    required Login login,
+    required SignUp signUp,
+  })  : _login = login,
+        _signUp = signUp,
+        super(initialState ??
+            AuthenticationState(
+              user: User.empty,
+            ));
 
-  setUser(User user) {
-    emit(state.copyWith(user));
+  Future<void> login({
+    required String email,
+    required String password,
+  }) async {
+    var either = await _login(email: email, password: password);
+    either.fold(
+      (l) => emit(state.copyWith(
+        error: l.error,
+      )),
+      (r) => emit(state.copyWith(user: r)),
+    );
+  }
+
+  Future<void> signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    var either = await _signUp(name: name, email: email, password: password);
+    either.fold((l) => emit(state.copyWith(error: l.error)),
+        (r) => emit(state.copyWith(user: r)));
   }
 }
