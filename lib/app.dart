@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:bloc_login/features/authentication/domain/usecase/login.dart';
+import 'package:bloc_login/features/authentication/domain/usecase/sign_up.dart';
 import 'package:bloc_login/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:bloc_login/home_page.dart';
 import 'package:bloc_login/login/pages/login_page.dart';
@@ -20,13 +22,17 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: authenticationRepository,
-      child: BlocProvider<AuthenticationCubit>(
-        create: (_) => AuthenticationCubit(),
-        child: AppView(),
-      ),
-    );
+    return Container();
+    // return RepositoryProvider.value(
+    //   value: authenticationRepository,
+    //   child: BlocProvider<AuthenticationCubit>(
+    //     create: (_) => AuthenticationCubit(
+    //       login: Login(),
+    //       signUp: SignUp(),
+    //     ),
+    //     child: AppView(),
+    //   ),
+    // );
   }
 }
 
