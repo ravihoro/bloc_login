@@ -1,31 +1,28 @@
-import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/model/user_model.dart';
-
 class SignUpState extends Equatable {
-  final bool isLoading;
-  final User? user;
-  final String errorString;
+  final String name;
+  final String email;
+  final String password;
 
-  const SignUpState({this.isLoading = false, this.user, this.errorString = ''});
+  const SignUpState({this.name = "", this.password = "", this.email = ""});
 
   SignUpState copyWith({
-    bool? isLoading,
-    User? user,
-    String? errorString,
+    String? name,
+    String? email,
+    String? password,
   }) {
     return SignUpState(
-      isLoading: isLoading ?? this.isLoading,
-      user: user,
-      errorString: errorString ?? '',
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
     );
   }
 
   @override
   List<Object?> get props => [
-        isLoading,
-        user,
-        errorString,
+        name,
+        email,
+        password,
       ];
 }
