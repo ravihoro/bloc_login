@@ -2,13 +2,19 @@ part of 'authentication_cubit.dart';
 
 class AuthenticationState extends Equatable {
   final User user;
+  final String error;
 
-  const AuthenticationState({required this.user});
+  const AuthenticationState({this.user = User.empty, this.error = ""});
 
-  AuthenticationState copyWith(User user) => AuthenticationState(user: user);
+  AuthenticationState copyWith({User user = User.empty, String error = ""}) =>
+      AuthenticationState(
+        user: user,
+        error: error,
+      );
 
   @override
   List<Object?> get props => [
         user,
+        error,
       ];
 }
