@@ -73,6 +73,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: loginFailure.error,
           ),
         ],
@@ -89,6 +90,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: serverFailure.error,
           )
         ],
@@ -105,6 +107,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: failure.error,
           )
         ],
@@ -147,6 +150,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: signUpFailure.error,
           ),
         ],
@@ -165,6 +169,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: serverFailure.error,
           ),
         ],
@@ -184,6 +189,7 @@ void main() {
         },
         expect: () => [
           AuthenticationState(
+            user: User.empty,
             error: failure.error,
           ),
         ],
