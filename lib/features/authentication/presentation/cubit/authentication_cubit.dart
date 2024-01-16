@@ -45,4 +45,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     either.fold((l) => emit(state.copyWith(error: l.error)),
         (r) => emit(state.copyWith(user: r)));
   }
+
+  void logout() {
+    emit(state.copyWith(user: User.empty));
+  }
 }
