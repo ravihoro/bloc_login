@@ -1,39 +1,25 @@
-import 'package:bloc_login/core/model/user_model.dart';
-import 'package:bloc_login/features/authentication/domain/entity/user.dart';
-import 'package:bloc_login/features/login/domain/usecase/login_usecase.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final LoginState? initialState;
-  final LoginUseCase useCase;
 
-  LoginCubit({required this.useCase, this.initialState})
-      : super(initialState ?? LoginState());
+  LoginCubit({
+    this.initialState,
+  }) : super(
+          initialState ?? LoginState(),
+        );
 
-  void login({
-    required String email,
-    required String password,
-  }) async {
-    emit(state.copyWith(isLoading: true));
-    var either = await useCase.login(email: email, password: password);
-    either.fold(
-      (l) => emit(state.copyWith(
-        isLoading: false,
-        errorString: l.error,
-      )),
-      (r) => emit(
-        state.copyWith(
-          isLoading: false,
-          user: User(
-            id: "",
-            password: "",
-            email: r.email,
-            name: "",
-          ),
-        ),
-      ),
-    );
+  setLoader(bool value) {
+    emit(state.copyWith(isLoading: value));
+  }
+
+  setEmail(String? value) {
+    emit(state.copyWith(email: value));
+  }
+
+  setPassword(String? value) {
+    emit(state.copyWith(password: value));
   }
 }
