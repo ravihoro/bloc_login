@@ -33,6 +33,15 @@ void main() {
     authenticationCubit = AuthenticationCubit(login: login, signUp: signUp);
   });
 
+  blocTest<AuthenticationCubit, AuthenticationState>(
+    'should be a successful logout',
+    build: () => authenticationCubit,
+    act: (cubit) => cubit.logout(),
+    expect: () => [
+      AuthenticationState(user: User.empty),
+    ],
+  );
+
   group(
     'should test authentication cubit login usecase',
     () {
