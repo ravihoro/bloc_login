@@ -1,5 +1,5 @@
+import 'package:bloc_login/core/utils/validators.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -11,15 +11,19 @@ class LoginCubit extends Cubit<LoginState> {
           initialState ?? LoginState(),
         );
 
-  setLoader(bool value) {
-    emit(state.copyWith(isLoading: value));
-  }
-
   setEmail(String? value) {
-    emit(state.copyWith(email: value));
+    emit(state.copyWith(
+      email: value,
+      isValid: isValidEmail(value) == null &&
+          isValidPassword(state.password) == null,
+    ));
   }
 
   setPassword(String? value) {
-    emit(state.copyWith(password: value));
+    emit(state.copyWith(
+      password: value,
+      isValid:
+          isValidEmail(state.email) == null && isValidPassword(value) == null,
+    ));
   }
 }
