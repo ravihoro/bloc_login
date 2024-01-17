@@ -18,10 +18,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required SignUp signUp,
   })  : _login = login,
         _signUp = signUp,
-        super(initialState ??
-            AuthenticationState(
-              user: User.empty,
-            ));
+        super(initialState ?? AuthenticationState(user: User.empty));
+
+  emitUser(User? user) {
+    emit(state.copyWith(user: user));
+  }
 
   Future<void> login({
     required String email,
