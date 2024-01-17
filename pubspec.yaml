@@ -33,6 +33,7 @@ dependencies:
   get_it:
   provider:
   http:
+  shared_preferences:
 
 dev_dependencies:
   build_runner:
