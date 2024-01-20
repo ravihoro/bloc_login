@@ -1,33 +1,34 @@
-import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:equatable/equatable.dart';
 
-class ResponseModel extends Equatable {
-  final bool? success;
+class ResponseModel<T> extends Equatable {
+  final bool isSuccess;
   final String? message;
-  final User? user;
+  final T? data;
 
   ResponseModel({
-    this.success,
+    this.isSuccess = false,
     this.message,
-    this.user,
+    this.data,
   });
 
-  // factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
-  //       success: json["success"],
-  //       message: json["message"],
-  //       user: json["user"] == null ? null : User.fromJson(json["user"]),
-  //     );
+  factory ResponseModel.fromJson(Map<String, dynamic> json,
+          T Function(Map<String, dynamic>) fromJson) =>
+      ResponseModel(
+        isSuccess: json["isSuccess"],
+        message: json["message"],
+        data: fromJson(json["data"]),
+      );
 
-  // Map<String, dynamic> toJson() => {
-  //       "success": success,
-  //       "message": message,
-  //       "user": user?.toJson(),
-  //     };
+  Map<String, dynamic> toJson(Map<String, dynamic>? Function(T?) toJson) => {
+        "isSuccess": isSuccess,
+        "message": message,
+        "data": toJson(data),
+      };
 
   @override
   List<Object?> get props => [
-        success,
+        isSuccess,
         message,
-        user,
+        data,
       ];
 }
