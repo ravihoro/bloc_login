@@ -16,11 +16,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required String password,
   }) async {
     try {
-      final userModel = await _dataSource.login(
+      final responseModel = await _dataSource.login(
         email: email,
         password: password,
       );
-      return Right(userModel);
+      return Right(responseModel.data!);
     } on LoginException {
       return Left(
         const LoginFailure(),
@@ -43,12 +43,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required String password,
   }) async {
     try {
-      var user = await _dataSource.signUp(
+      var responseModel = await _dataSource.signUp(
         email: email,
         password: password,
         name: name,
       );
-      return Right(user);
+      return Right(responseModel.data!);
     } on SignUpException {
       return Left(SignUpFailure());
     } on ServerException {

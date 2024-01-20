@@ -1,13 +1,20 @@
 import 'dart:convert';
 import 'package:bloc_login/core/error/exception.dart';
+import 'package:bloc_login/core/model/response_model.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthenticationDataSource {
-  Future<UserModel> login({required String email, required String password});
+  Future<ResponseModel<UserModel>> login({
+    required String email,
+    required String password,
+  });
 
-  Future<UserModel> signUp(
-      {required String email, required String password, required String name});
+  Future<ResponseModel<UserModel>> signUp({
+    required String email,
+    required String password,
+    required String name,
+  });
 }
 
 class AuthenticationDataSourceImpl implements AuthenticationDataSource {
@@ -16,7 +23,7 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
   const AuthenticationDataSourceImpl(this._client);
 
   @override
-  Future<UserModel> login({
+  Future<ResponseModel<UserModel>> login({
     required String email,
     required String password,
   }) async {
@@ -31,15 +38,17 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
       ),
     );
 
+    var responseModel = ResponseModel<UserModel>.fromJson(
+        jsonDecode(response.body), UserModel.fromJson);
     if (response.statusCode == 200) {
-      return UserModel.fromJson(jsonDecode(response.body));
+      return responseModel;
     } else {
-      return throw LoginException();
+      return throw LoginException(message: responseModel.message ?? "");
     }
   }
 
   @override
-  Future<UserModel> signUp({
+  Future<ResponseModel<UserModel>> signUp({
     required String email,
     required String password,
     required String name,
@@ -55,10 +64,13 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
         },
       ),
     );
+
+    var responseModel = ResponseModel<UserModel>.fromJson(
+        jsonDecode(response.body), UserModel.fromJson);
     if (response.statusCode == 201) {
-      return UserModel.fromJson(jsonDecode(response.body));
+      return responseModel;
     } else {
-      throw SignUpException();
+      throw SignUpException(message: responseModel.message ?? "");
     }
   }
 }
