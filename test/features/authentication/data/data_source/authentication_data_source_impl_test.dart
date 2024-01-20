@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc_login/core/error/exception.dart';
+import 'package:bloc_login/core/model/response_model.dart';
 import 'package:bloc_login/features/authentication/data/data_source/authentication_data_source.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,11 +37,24 @@ void main() {
     "name": "ravi"
   });
 
-  var successResponse = Response(jsonEncode(userModel.toJson()), 200);
+  var successResponseModel =
+      ResponseModel<UserModel>(data: userModel, isSuccess: true);
 
-  var successSignUpResponse = Response(jsonEncode(userModel.toJson()), 201);
+  var successResponse =
+      jsonEncode(successResponseModel.toJson((data) => data?.toJson()));
+
+  var successLoginResponse = Response(successResponse, 200);
+
+  var successSignUpResponse = Response(successResponse, 201);
 
   var failedResponse = Response("Error", 400);
+
+  var emailPasswordMissingResponse =
+      Response("Email and password missing", 400);
+  var emailMissingResponse = Response("Email missing", 400);
+  var passwordMissingResponse = Response("Password missing", 400);
+  var internalServerErrorResponse = Response("Internal server error", 500);
+  var userNotFoundResponse = Response("User not found", 404);
 
   group('should test login', () {
     test(
@@ -50,7 +64,7 @@ void main() {
               loginUri,
               body: loginBody,
             )).thenAnswer(
-          (_) async => successResponse,
+          (_) async => successLoginResponse,
         );
 
         var response = await dataSource.login(
@@ -60,7 +74,7 @@ void main() {
 
         verify(() => http.post(loginUri, body: loginBody)).called(1);
 
-        expect(response, userModel);
+        expect(response, successResponseModel);
       },
     );
 
@@ -104,7 +118,7 @@ void main() {
 
           verify(() => http.post(signUpUri, body: signUpBody)).called(1);
 
-          expect(response, userModel);
+          expect(response, successResponseModel);
         },
       );
 

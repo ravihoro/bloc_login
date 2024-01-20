@@ -1,5 +1,6 @@
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/error/failure.dart';
+import 'package:bloc_login/core/model/response_model.dart';
 import 'package:bloc_login/features/authentication/data/data_source/authentication_data_source.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:bloc_login/features/authentication/data/repository/authentication_repository_impl.dart';
@@ -17,6 +18,8 @@ void main() {
 
   var user = UserModel(id: "1", email: email, password: password, name: "Ravi");
 
+  var successResponseModel = ResponseModel(isSuccess: true, data: user);
+
   var dataSource = MockAuthenticationDataSource();
 
   var repository = AuthenticationRepositoryImpl(dataSource);
@@ -31,7 +34,7 @@ void main() {
                 email: email,
                 password: password,
               )).thenAnswer(
-            (_) async => user,
+            (_) async => successResponseModel,
           );
 
           var response =
@@ -93,7 +96,7 @@ void main() {
           when(() => dataSource.signUp(
               email: email,
               password: password,
-              name: name)).thenAnswer((_) async => user);
+              name: name)).thenAnswer((_) async => successResponseModel);
 
           var response = await repository.signUp(
               email: email, password: password, name: name);
