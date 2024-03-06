@@ -18,7 +18,8 @@ void main() {
 
   var user = UserModel(id: "1", email: email, password: password, name: "Ravi");
 
-  var successResponseModel = ResponseModel(isSuccess: true, data: user);
+  var successResponseModel =
+      ResponseModel<UserModel>(isSuccess: true, data: user);
 
   var dataSource = MockAuthenticationDataSource();
 
