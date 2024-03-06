@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/model/response_model.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
@@ -27,16 +28,22 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
     required String email,
     required String password,
   }) async {
-    final apiUrl = "http://localhost:3000/login";
+    final apiUrl = "http://192.168.29.163:3000/login";
+    log("email: $email password: $password");
+    var body = jsonEncode(
+      {
+        "email": email,
+        "password": password,
+      },
+    );
+    log("body is: $body");
     final response = await _client.post(
       Uri.parse(apiUrl),
-      body: jsonEncode(
-        {
-          "email": email,
-          "password": password,
-        },
-      ),
+      headers: {'Content-Type': 'application/json'},
+      body: body,
     );
+
+    log("login response: ${response.body}");
 
     var responseModel = ResponseModel<UserModel>.fromJson(
         jsonDecode(response.body), UserModel.fromJson);

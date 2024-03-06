@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/authentication/domain/repository/authentication_repository.dart';
@@ -12,6 +14,7 @@ class Login {
     required String email,
     required String password,
   }) async {
+    log('login usecase called');
     return await _repository.login(email: email, password: password);
   }
 }

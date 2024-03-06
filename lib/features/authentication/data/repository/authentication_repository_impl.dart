@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/error/failure.dart';
 import 'package:bloc_login/features/authentication/data/data_source/authentication_data_source.dart';
@@ -21,17 +23,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         password: password,
       );
       return Right(responseModel.data!);
-    } on LoginException {
+    } on LoginException catch (e) {
       return Left(
-        const LoginFailure(),
+        LoginFailure(error: e.message),
       );
-    } on ServerException {
+    } on ServerException catch (e) {
       return Left(
-        const ServerFailure(),
+        ServerFailure(error: e.message),
       );
     } catch (e) {
+      log("loging error: ${e.toString()}");
       return Left(
-        const GenericFailure(),
+        GenericFailure(error: e.toString()),
       );
     }
   }

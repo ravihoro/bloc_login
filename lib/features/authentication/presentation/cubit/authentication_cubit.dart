@@ -30,11 +30,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }) async {
     var either = await _login(email: email, password: password);
     either.fold(
-      (l) => emit(state.copyWith(
-        user: User.empty,
-        error: l.error,
-      )),
-      (r) => emit(state.copyWith(user: r)),
+      (l) => emit(
+        state.copyWith(
+          user: User.empty,
+          error: l.error,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(user: r),
+      ),
     );
   }
 
