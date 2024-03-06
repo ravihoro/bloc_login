@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'bloc login',
-      home: BlocProvider<AuthenticationCubit>(
-        create: (_) => sl<AuthenticationCubit>(),
-        child: AppView(),
+    return BlocProvider<AuthenticationCubit>(
+      create: (_) => sl<AuthenticationCubit>(),
+      child: MaterialApp(
+        title: 'bloc login',
+        home: AppView(),
       ),
     );
   }

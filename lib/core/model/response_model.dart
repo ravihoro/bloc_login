@@ -16,7 +16,7 @@ class ResponseModel<T> extends Equatable {
       ResponseModel(
         isSuccess: json["isSuccess"],
         message: json["message"],
-        data: fromJson(json["data"]),
+        data: json["data"] == null ? null : fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson(Map<String, dynamic>? Function(T?) toJson) => {
