@@ -1,3 +1,4 @@
+import 'package:bloc_login/features/sign_up/presentation/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class SignUpButton extends StatelessWidget {
@@ -6,8 +7,11 @@ class SignUpButton extends StatelessWidget {
     return TextButton(
       child: Text('Sign Up'),
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Container()));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => SignUpPage(),
+          ),
+        );
       },
     );
   }
