@@ -14,7 +14,7 @@ class Login {
     required String email,
     required String password,
   }) async {
-    log('login usecase called');
+    log('login usecase called: $email $password');
     return await _repository.login(email: email, password: password);
   }
 }

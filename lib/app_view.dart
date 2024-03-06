@@ -24,7 +24,6 @@ class _AppViewState extends State<AppView> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     checkIfUserIsLoggedIn();
   }
@@ -33,8 +32,10 @@ class _AppViewState extends State<AppView> {
     await SharedPreferences.getInstance().then(
       (prefs) {
         var value = prefs.getString('user');
-        var user =
-            value == null ? User.empty : UserModel.fromJson(jsonDecode(value));
+        log("prefs value: $value");
+        var user = value == null || value.isEmpty
+            ? User.empty
+            : UserModel.fromJson(jsonDecode(value));
         context.read<AuthenticationCubit>().emitUser(user);
       },
     );
@@ -43,11 +44,17 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationCubit, AuthenticationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         log("User is: ${state.user != User.empty}");
         if (state.user == User.empty) {
           Navigator.of(context).push(LoginPage.route());
         } else {
+          await SharedPreferences.getInstance().then(
+            (prefs) => prefs.setString(
+              'user',
+              jsonEncode((state.user as UserModel).toJson()),
+            ),
+          );
           Navigator.of(context).push(
             HomePage.route(),
           );

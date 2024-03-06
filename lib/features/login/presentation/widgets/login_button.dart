@@ -22,8 +22,8 @@ class LoginButton extends StatelessWidget {
               ? null
               : () {
                   context.read<AuthenticationCubit>().login(
-                        email: state.email!,
-                        password: state.password!,
+                        email: context.read<LoginCubit>().state.email!,
+                        password: context.read<LoginCubit>().state.password!,
                       );
                 },
         );

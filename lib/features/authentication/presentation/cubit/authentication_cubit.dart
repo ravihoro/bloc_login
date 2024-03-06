@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/authentication/domain/usecase/login.dart';
@@ -28,6 +30,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     required String email,
     required String password,
   }) async {
+    log("auth cubit: $password");
     var either = await _login(email: email, password: password);
     either.fold(
       (l) => emit(

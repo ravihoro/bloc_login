@@ -5,7 +5,6 @@ class UserModel extends User {
     required super.id,
     required super.name,
     required super.email,
-    required super.password,
   });
 
   Map<String, dynamic> toJson() {
@@ -13,7 +12,6 @@ class UserModel extends User {
       'id': id,
       'name': name,
       'email': email,
-      'password': password,
     };
   }
 
@@ -22,7 +20,6 @@ class UserModel extends User {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      password: json['password'],
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bloc_login/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -13,8 +14,10 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: TextButton(
           child: Text('Logout'),
-          onPressed: () {
-            context.read<AuthenticationCubit>();
+          onPressed: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('user', '');
+            context.read<AuthenticationCubit>().logout();
           },
         ),
       ),

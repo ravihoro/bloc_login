@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc_login/core/utils/validators.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +22,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   setPassword(String? value) {
+    log("set password: $value");
     emit(state.copyWith(
       password: value,
       isValid:
