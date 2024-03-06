@@ -17,45 +17,47 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState get _navigator => _navigatorKey.currentState as NavigatorState;
-
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
     checkIfUserIsLoggedIn();
   }
 
   void checkIfUserIsLoggedIn() async {
-    await SharedPreferences.getInstance().then((prefs) {
-      var value = prefs.getString('user');
-      var user =
-          value == null ? User.empty : UserModel.fromJson(jsonDecode(value));
-      context.read<AuthenticationCubit>().emitUser(user);
-    });
+    await SharedPreferences.getInstance().then(
+      (prefs) {
+        var value = prefs.getString('user');
+        var user =
+            value == null ? User.empty : UserModel.fromJson(jsonDecode(value));
+        context.read<AuthenticationCubit>().emitUser(user);
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      builder: (context, child) {
-        return BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (context, state) {
-            log("User is: ${state.user == User.empty}");
-            if (state.user == User.empty) {
-              _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(), (route) => false);
-            } else {
-              _navigator.pushAndRemoveUntil<void>(
-                  HomePage.route(), (route) => false);
-            }
-          },
-          child: child,
-        );
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        log("User is: ${state.user != User.empty}");
+        if (state.user == User.empty) {
+          Navigator.of(context).push(LoginPage.route());
+        } else {
+          Navigator.of(context).push(
+            HomePage.route(),
+          );
+        }
       },
-      onGenerateRoute: (_) => SplashPage.route(),
+      child: Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }
