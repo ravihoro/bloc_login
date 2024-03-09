@@ -4,6 +4,7 @@ import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:bloc_login/features/authentication/domain/entity/user.dart';
 import 'package:bloc_login/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:bloc_login/features/login/presentation/pages/login_page.dart';
+import 'package:bloc_login/features/sign_up/presentation/pages/sign_up_page.dart';
 import 'package:bloc_login/home_page.dart';
 import 'package:bloc_login/splash.dart';
 //import 'package:bloc_login/sign_up/pages/sign_up_page.dart';
@@ -32,7 +33,6 @@ class _AppViewState extends State<AppView> {
     await SharedPreferences.getInstance().then(
       (prefs) {
         var value = prefs.getString('user');
-        log("prefs value: $value");
         var user = value == null || value.isEmpty
             ? User.empty
             : UserModel.fromJson(jsonDecode(value));
@@ -43,28 +43,33 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationCubit, AuthenticationState>(
+    return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) async {
-        log("User is: ${state.user != User.empty}");
-        if (state.user == User.empty) {
-          Navigator.of(context).push(LoginPage.route());
-        } else {
+        log("listener: ${state.error}");
+        if (state.user != User.empty) {
           await SharedPreferences.getInstance().then(
             (prefs) => prefs.setString(
               'user',
               jsonEncode((state.user as UserModel).toJson()),
             ),
           );
-          Navigator.of(context).push(
-            HomePage.route(),
+        } else if (state.error.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.error,
+              ),
+            ),
           );
         }
       },
-      child: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      builder: (context, state) {
+        if (state.user == User.empty) {
+          return state.isLoginPage ? LoginPage() : SignUpPage();
+        } else {
+          return HomePage();
+        }
+      },
     );
   }
 }
