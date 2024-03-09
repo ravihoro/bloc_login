@@ -19,7 +19,11 @@ void main() {
   const email = "ravi@gmail.com";
   const password = "123456";
 
-  var user = User(id: id, name: name, email: email, password: password);
+  var user = User(
+    id: id,
+    name: name,
+    email: email,
+  );
 
   group('should test sign usecase', () {
     test(

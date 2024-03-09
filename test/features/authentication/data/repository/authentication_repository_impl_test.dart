@@ -16,7 +16,7 @@ void main() {
   var email = "ravi@gmail.com";
   var password = "123456";
 
-  var user = UserModel(id: "1", email: email, password: password, name: "Ravi");
+  var user = UserModel(id: "1", email: email, name: "Ravi");
 
   var successResponseModel =
       ResponseModel<UserModel>(isSuccess: true, data: user);
@@ -51,7 +51,7 @@ void main() {
         'should be a login failure',
         () async {
           when(() => dataSource.login(email: email, password: password))
-              .thenThrow(LoginException());
+              .thenThrow(LoginException(message: "Login failed"));
 
           var response =
               await repository.login(email: email, password: password);
@@ -64,7 +64,7 @@ void main() {
         'should be a server failure',
         () async {
           when(() => dataSource.login(email: email, password: password))
-              .thenThrow(ServerException());
+              .thenThrow(ServerException(message: "Server failure"));
 
           var response =
               await repository.login(email: email, password: password);
@@ -110,9 +110,8 @@ void main() {
         'should be a sign up failure',
         () async {
           when(() => dataSource.signUp(
-              email: email,
-              password: password,
-              name: name)).thenThrow(SignUpException());
+                  email: email, password: password, name: name))
+              .thenThrow(SignUpException(message: 'Sign up failed'));
 
           var response = await repository.signUp(
               name: name, email: email, password: password);
@@ -125,9 +124,8 @@ void main() {
         'should be a server failure',
         () async {
           when(() => dataSource.signUp(
-              email: email,
-              password: password,
-              name: name)).thenThrow(ServerException());
+                  email: email, password: password, name: name))
+              .thenThrow(ServerException(message: 'Server failure'));
 
           var response = await repository.signUp(
               name: name, email: email, password: password);

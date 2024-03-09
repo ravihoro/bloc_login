@@ -13,11 +13,12 @@ class MockLogin extends Mock implements Login {}
 class MockSignUp extends Mock implements SignUp {}
 
 void main() {
+  String password = "123456";
+
   var user = User(
     id: "1",
     name: "ravi",
     email: "ravi@gmail.com",
-    password: "123456",
   );
 
   var login = MockLogin();
@@ -49,12 +50,12 @@ void main() {
         'should be a successful user login',
         build: () => authenticationCubit,
         act: (cubit) {
-          when(() => login(email: user.email, password: user.password))
+          when(() => login(email: user.email, password: password))
               .thenAnswer((_) async => Right(user));
 
           cubit.login(
             email: user.email,
-            password: user.password,
+            password: password,
           );
         },
         expect: () => [
@@ -66,10 +67,10 @@ void main() {
         'should be a login failure',
         build: () => authenticationCubit,
         act: (cubit) {
-          when(() => login(email: user.email, password: user.password))
+          when(() => login(email: user.email, password: password))
               .thenAnswer((_) async => Left(loginFailure));
 
-          cubit.login(email: user.email, password: user.password);
+          cubit.login(email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(
@@ -83,10 +84,10 @@ void main() {
         'should be a server failure',
         build: () => authenticationCubit,
         act: (cubit) {
-          when(() => login(email: user.email, password: user.password))
+          when(() => login(email: user.email, password: password))
               .thenAnswer((_) async => Left(serverFailure));
 
-          cubit.login(email: user.email, password: user.password);
+          cubit.login(email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(
@@ -100,10 +101,10 @@ void main() {
         'should be a generic failure',
         build: () => authenticationCubit,
         act: (cubit) {
-          when(() => login(email: user.email, password: user.password))
+          when(() => login(email: user.email, password: password))
               .thenAnswer((_) async => Left(failure));
 
-          cubit.login(email: user.email, password: user.password);
+          cubit.login(email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(
@@ -125,12 +126,11 @@ void main() {
           when(() => signUp(
               name: user.name,
               email: user.email,
-              password: user.password)).thenAnswer(
+              password: password)).thenAnswer(
             (_) async => Right(user),
           );
 
-          cubit.signUp(
-              name: user.name, email: user.email, password: user.password);
+          cubit.signUp(name: user.name, email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(user: user),
@@ -142,11 +142,11 @@ void main() {
         build: () => authenticationCubit,
         act: (cubit) {
           when(() => signUp(
-                  name: user.name, email: user.email, password: user.password))
-              .thenAnswer((_) async => Left(signUpFailure));
+              name: user.name,
+              email: user.email,
+              password: password)).thenAnswer((_) async => Left(signUpFailure));
 
-          cubit.signUp(
-              name: user.name, email: user.email, password: user.password);
+          cubit.signUp(name: user.name, email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(
@@ -161,11 +161,11 @@ void main() {
         build: () => authenticationCubit,
         act: (cubit) {
           when(() => signUp(
-                  name: user.name, email: user.email, password: user.password))
-              .thenAnswer((_) async => Left(serverFailure));
+              name: user.name,
+              email: user.email,
+              password: password)).thenAnswer((_) async => Left(serverFailure));
 
-          cubit.signUp(
-              name: user.name, email: user.email, password: user.password);
+          cubit.signUp(name: user.name, email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(
@@ -182,10 +182,9 @@ void main() {
           when(() => signUp(
               name: user.name,
               email: user.email,
-              password: user.password)).thenAnswer((_) async => Left(failure));
+              password: password)).thenAnswer((_) async => Left(failure));
 
-          cubit.signUp(
-              name: user.name, email: user.email, password: user.password);
+          cubit.signUp(name: user.name, email: user.email, password: password);
         },
         expect: () => [
           AuthenticationState(

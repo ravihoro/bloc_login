@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/model/response_model.dart';
+import 'package:bloc_login/core/utils/constant.dart';
+import 'package:bloc_login/core/utils/helper_functions.dart';
 import 'package:bloc_login/features/authentication/data/data_source/authentication_data_source.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,27 +17,24 @@ void main() {
 
   var dataSource = AuthenticationDataSourceImpl(http);
 
-  var loginUri = Uri.parse("http://localhost:3000/login");
-
-  var signUpUri = Uri.parse("http://localhost:3000/signUp");
+  String password = "123456";
 
   var userModel = UserModel(
     id: "1",
     name: "ravi",
     email: "ravi@gmail.com",
-    password: "123456",
   );
 
-  var loginBody = jsonEncode({
+  var loginBody = {
     "email": userModel.email,
-    "password": userModel.password,
-  });
+    "password": password,
+  };
 
-  var signUpBody = jsonEncode({
+  var signUpBody = {
     "email": userModel.email,
-    "password": userModel.password,
+    "password": password,
     "name": "ravi"
-  });
+  };
 
   var successResponseModel =
       ResponseModel<UserModel>(data: userModel, isSuccess: true);
@@ -62,19 +61,22 @@ void main() {
       test(
         'should be a successful login',
         () async {
-          when(() => http.post(
-                loginUri,
-                body: loginBody,
-              )).thenAnswer(
+          when(
+            () => postMethod(
+              http,
+              loginUrl,
+              loginBody,
+            ),
+          ).thenAnswer(
             (_) async => successLoginResponse,
           );
 
           var response = await dataSource.login(
             email: userModel.email,
-            password: userModel.password,
+            password: password,
           );
 
-          verify(() => http.post(loginUri, body: loginBody)).called(1);
+          verify(() => postMethod(http, loginUrl, loginBody)).called(1);
 
           expect(response, successResponseModel);
         },
@@ -83,13 +85,18 @@ void main() {
       test(
         'should be a login exception',
         () async {
-          when(() => http.post(loginUri, body: loginBody))
-              .thenThrow(LoginException());
+          when(
+            () => postMethod(
+              http,
+              loginUrl,
+              loginBody,
+            ),
+          ).thenThrow(LoginException());
 
           expect(
             dataSource.login(
               email: userModel.email,
-              password: userModel.password,
+              password: password,
             ),
             throwsA(
               isA<LoginException>(),
@@ -106,20 +113,29 @@ void main() {
       test(
         'should be a successful sign up',
         () async {
-          when(() => http.post(
-                signUpUri,
-                body: signUpBody,
-              )).thenAnswer(
+          when(
+            () => postMethod(
+              http,
+              signUpUrl,
+              signUpBody,
+            ),
+          ).thenAnswer(
             (_) async => successSignUpResponse,
           );
 
           var response = await dataSource.signUp(
             email: userModel.email,
-            password: userModel.password,
+            password: password,
             name: userModel.name,
           );
 
-          verify(() => http.post(signUpUri, body: signUpBody)).called(1);
+          verify(
+            () => postMethod(
+              http,
+              signUpUrl,
+              signUpBody,
+            ),
+          ).called(1);
 
           expect(response, successResponseModel);
         },
@@ -128,13 +144,20 @@ void main() {
       test(
         'should be a sign up exception',
         () async {
-          when(() => http.post(signUpUri, body: signUpBody))
-              .thenAnswer((_) => throw SignUpException());
+          when(
+            () => postMethod(
+              http,
+              signUpUrl,
+              signUpBody,
+            ),
+          ).thenAnswer(
+            (_) => throw SignUpException(),
+          );
 
           expect(
             dataSource.signUp(
                 email: userModel.email,
-                password: userModel.password,
+                password: password,
                 name: userModel.name),
             throwsA(
               isA<SignUpException>(),
