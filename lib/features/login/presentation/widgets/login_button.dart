@@ -11,7 +11,7 @@ class LoginButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.isValid != current.isValid,
       builder: (context, state) {
         return ElevatedButton(
-          key: const Key('loginForm_login_raisedButton'),
+          key: const Key('loginForm_login_elevatedButton'),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),

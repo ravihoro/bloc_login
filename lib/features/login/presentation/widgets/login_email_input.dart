@@ -1,4 +1,3 @@
-import 'package:bloc_login/core/utils/validators.dart';
 import 'package:bloc_login/core/widgets/custom_text_form_field.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_cubit.dart';
 import 'package:bloc_login/features/login/presentation/bloc/login_state.dart';

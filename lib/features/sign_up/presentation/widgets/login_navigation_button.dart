@@ -6,6 +6,7 @@ class LoginNavigationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      key: ValueKey("login_navigation_key"),
       child: Text('Login'),
       onPressed: () {
         context.read<AuthenticationCubit>().setIsLoginPage(true);

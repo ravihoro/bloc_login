@@ -13,6 +13,7 @@ class SignUpButton extends StatelessWidget {
       buildWhen: ((previous, current) => previous.isValid != current.isValid),
       builder: (context, state) {
         return ElevatedButton(
+          key: ValueKey("signUpForm_signUp_elevatedButton"),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
