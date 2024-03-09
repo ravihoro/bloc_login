@@ -1,22 +1,55 @@
+import 'package:bloc_login/core/utils/validators.dart';
 import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final SignUpState? initialState;
 
-  SignUpCubit({
-    this.initialState,
-  }) : super(initialState ?? SignUpState());
+  SignUpCubit({this.initialState}) : super(initialState ?? SignUpState());
 
-  setName(String value) {
-    emit(state.copyWith(name: value));
+  bool isValid({
+    String? name,
+    String? email,
+    String? password,
+  }) {
+    name = name ?? state.name;
+    email = email ?? state.email;
+    password = password ?? state.password;
+    return isValidName(name) == null &&
+        isValidEmail(email) == null &&
+        isValidPassword(password) == null;
   }
 
-  setEmail(String value) {
-    emit(state.copyWith(email: value));
+  setName(String? name) {
+    emit(
+      state.copyWith(
+        name: name,
+        isValid: isValid(
+          name: name,
+        ),
+      ),
+    );
   }
 
-  setPassword(String value) {
-    emit(state.copyWith(password: value));
+  setEmail(String? email) {
+    emit(
+      state.copyWith(
+        email: email,
+        isValid: isValid(
+          email: email,
+        ),
+      ),
+    );
+  }
+
+  setPassword(String? password) {
+    emit(
+      state.copyWith(
+        password: password,
+        isValid: isValid(
+          password: password,
+        ),
+      ),
+    );
   }
 }
