@@ -13,11 +13,16 @@ class LoginCubit extends Cubit<LoginState> {
           initialState ?? LoginState(),
         );
 
+  bool isValid({String? email, String? password}) {
+    email = email ?? state.email;
+    password = password ?? state.password;
+    return isValidEmail(email) == null && isValidPassword(password) == null;
+  }
+
   setEmail(String? value) {
     emit(state.copyWith(
       email: value,
-      isValid: isValidEmail(value) == null &&
-          isValidPassword(state.password) == null,
+      isValid: isValid(email: value),
     ));
   }
 
@@ -25,8 +30,7 @@ class LoginCubit extends Cubit<LoginState> {
     log("set password: $value");
     emit(state.copyWith(
       password: value,
-      isValid:
-          isValidEmail(state.email) == null && isValidPassword(value) == null,
+      isValid: isValid(password: value),
     ));
   }
 }

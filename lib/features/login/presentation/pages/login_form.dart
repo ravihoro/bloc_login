@@ -1,7 +1,7 @@
-import 'package:bloc_login/features/login/presentation/widgets/email_input.dart';
+import 'package:bloc_login/features/login/presentation/widgets/login_email_input.dart';
 import 'package:bloc_login/features/login/presentation/widgets/login_button.dart';
-import 'package:bloc_login/features/login/presentation/widgets/password_input.dart';
-import 'package:bloc_login/features/login/presentation/widgets/sign_up_button.dart';
+import 'package:bloc_login/features/login/presentation/widgets/login_password_input.dart';
+import 'package:bloc_login/features/login/presentation/widgets/sign_up_navigation_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {
@@ -10,11 +10,11 @@ class LoginForm extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        EmailInput(),
+        LoginEmailInput(),
         const SizedBox(
           height: 8.0,
         ),
-        PasswordInput(),
+        LoginPasswordInput(),
         const SizedBox(
           height: 8.0,
         ),
@@ -22,7 +22,7 @@ class LoginForm extends StatelessWidget {
         const SizedBox(
           height: 8.0,
         ),
-        SignUpButton(),
+        SignUpNavigationButton(),
       ],
     );
   }
