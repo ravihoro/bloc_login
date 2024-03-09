@@ -1,1 +1,4 @@
-const String baseUrl = "http://192.168.29.89:3000";
+const String baseUrl = "http://192.168.29.163:3000";
+
+const String loginUrl = "$baseUrl/login";
+const String signUpUrl = "$baseUrl/signUp";
