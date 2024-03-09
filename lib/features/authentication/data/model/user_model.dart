@@ -22,4 +22,8 @@ class UserModel extends User {
       email: json['email'],
     );
   }
+
+  factory UserModel.fromUser(User user) {
+    return UserModel(id: user.id, name: user.name, email: user.email);
+  }
 }

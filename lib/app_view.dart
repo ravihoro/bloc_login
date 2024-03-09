@@ -35,7 +35,7 @@ class _AppViewState extends State<AppView> {
         var value = prefs.getString('user');
         var user = value == null || value.isEmpty
             ? User.empty
-            : UserModel.fromJson(jsonDecode(value));
+            : User.fromUserModel(UserModel.fromJson(jsonDecode(value)));
         context.read<AuthenticationCubit>().emitUser(user);
       },
     );
@@ -50,7 +50,7 @@ class _AppViewState extends State<AppView> {
           await SharedPreferences.getInstance().then(
             (prefs) => prefs.setString(
               'user',
-              jsonEncode((state.user as UserModel).toJson()),
+              jsonEncode((UserModel.fromUser(state.user)).toJson()),
             ),
           );
         } else if (state.error.isNotEmpty) {

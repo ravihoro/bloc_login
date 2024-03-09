@@ -1,3 +1,4 @@
+import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -16,6 +17,10 @@ class User extends Equatable {
     name: '',
     email: '',
   );
+
+  factory User.fromUserModel(UserModel user) {
+    return User(id: user.id, name: user.name, email: user.email);
+  }
 
   @override
   List<Object?> get props => [
