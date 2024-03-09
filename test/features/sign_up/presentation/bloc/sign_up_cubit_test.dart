@@ -1,114 +1,128 @@
-// import 'package:bloc_login/core/error/failure.dart';
-// import 'package:bloc_login/core/model/user_model.dart';
-// import 'package:bloc_login/features/authentication/domain/entity/user.dart';
-// import 'package:bloc_login/features/sign_up/domain/usecase/sign_up_usecase.dart';
-// import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_cubit.dart';
-// import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_state.dart';
+import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_cubit.dart';
+import 'package:bloc_login/features/sign_up/presentation/bloc/sign_up_state.dart';
+import 'package:bloc_test/bloc_test.dart';
 
-// import 'package:bloc_test/bloc_test.dart';
-// import 'package:dartz/dartz.dart';
-// import 'package:mocktail/mocktail.dart';
+void main() {
+  var name = "Ravi";
+  var email = "ravi.horo@gmail.com";
+  var password = "123456";
 
-// class MockSignUpUsecase extends Mock implements SignUpUsecase {}
+  var invalidName = "";
+  var invalidEmail = "ravi.horo@gmail";
+  var invalidPassword = "1234";
 
-// void main() {
-//   MockSignUpUsecase usecase = MockSignUpUsecase();
+  blocTest<SignUpCubit, SignUpState>(
+    'should set name',
+    build: () => SignUpCubit(),
+    act: (cubit) {
+      cubit.setName(name);
+    },
+    expect: () => [
+      SignUpState(name: name, isValid: false),
+    ],
+  );
 
-//   String username = "ravijohn";
-//   String email = "ravi.horo@gmail.com";
-//   String password = "Ravi@1234";
+  blocTest<SignUpCubit, SignUpState>(
+    'should set email',
+    build: () => SignUpCubit(),
+    act: (cubit) {
+      cubit.setEmail(email);
+    },
+    expect: () => [
+      SignUpState(email: email, isValid: false),
+    ],
+  );
 
-//   User user = User(
-//     id: "",
-//     password: "",
-//     name: username,
-//     email: email,
-//   );
+  blocTest<SignUpCubit, SignUpState>(
+    'should set password',
+    build: () => SignUpCubit(),
+    act: (cubit) {
+      cubit.setPassword(password);
+    },
+    expect: () => [
+      SignUpState(password: password, isValid: false),
+    ],
+  );
 
-//   Either<Failure, User> successfulSignUp = Right(
-//     user,
-//   );
+  blocTest<SignUpCubit, SignUpState>(
+    'should be valid form',
+    build: () => SignUpCubit(
+      initialState: SignUpState().copyWith(
+        name: name,
+        email: email,
+      ),
+    ),
+    act: (cubit) {
+      cubit.setPassword(password);
+    },
+    expect: () => [
+      SignUpState(
+        name: name,
+        email: email,
+        password: password,
+        isValid: true,
+      ),
+    ],
+  );
 
-//   var signUpFailure = const SignUpFailure();
-//   var serverFailure = const ServerFailure();
-//   var failure = const GenericFailure();
-
-//   blocTest<SignUpCubit, SignUpState>(
-//     'Should be a successful login',
-//     build: () => SignUpCubit(usecase: usecase),
-//     act: (signUpCubit) {
-//       when(() => usecase.signUp(
-//               username: username, email: email, password: password))
-//           .thenAnswer((realInvocation) async => successfulSignUp);
-
-//       signUpCubit.signUp(username: username, email: email, password: password);
-
-//       verify(() =>
-//           usecase.signUp(username: username, email: email, password: password));
-//     },
-//     expect: () => [
-//       const SignUpState(isLoading: true),
-//       SignUpState(
-//         isLoading: false,
-//         user: user,
-//       ),
-//     ],
-//   );
-
-//   blocTest<SignUpCubit, SignUpState>(
-//     'Should be a failed login',
-//     build: () => SignUpCubit(usecase: usecase),
-//     act: (signUpCubit) {
-//       when(() => usecase.signUp(
-//               username: username, email: email, password: password))
-//           .thenAnswer((realInvocation) async => Left(signUpFailure));
-
-//       signUpCubit.signUp(username: username, email: email, password: password);
-
-//       verify(() =>
-//           usecase.signUp(username: username, email: email, password: password));
-//     },
-//     expect: () => [
-//       const SignUpState(isLoading: true),
-//       SignUpState(isLoading: false, errorString: signUpFailure.error),
-//     ],
-//   );
-
-//   blocTest<SignUpCubit, SignUpState>(
-//     'Should be a server exception',
-//     build: () => SignUpCubit(usecase: usecase),
-//     act: (signUpCubit) {
-//       when(() => usecase.signUp(
-//               username: username, email: email, password: password))
-//           .thenAnswer((realInvocation) async => Left(serverFailure));
-
-//       signUpCubit.signUp(username: username, email: email, password: password);
-
-//       verify(() =>
-//           usecase.signUp(username: username, email: email, password: password));
-//     },
-//     expect: () => [
-//       const SignUpState(isLoading: true),
-//       SignUpState(isLoading: false, errorString: serverFailure.error),
-//     ],
-//   );
-
-//   blocTest<SignUpCubit, SignUpState>(
-//     'Should be an exception',
-//     build: () => SignUpCubit(usecase: usecase),
-//     act: (signUpCubit) {
-//       when(() => usecase.signUp(
-//               username: username, email: email, password: password))
-//           .thenAnswer((realInvocation) async => Left(failure));
-
-//       signUpCubit.signUp(username: username, email: email, password: password);
-
-//       verify(() =>
-//           usecase.signUp(username: username, email: email, password: password));
-//     },
-//     expect: () => [
-//       const SignUpState(isLoading: true),
-//       SignUpState(isLoading: false, errorString: failure.error),
-//     ],
-//   );
-// }
+  blocTest<SignUpCubit, SignUpState>(
+    'should be an form due to invalid password',
+    build: () => SignUpCubit(
+      initialState: SignUpState().copyWith(
+        name: name,
+        email: email,
+      ),
+    ),
+    act: (cubit) {
+      cubit.setPassword(invalidPassword);
+    },
+    expect: () => [
+      SignUpState(
+        name: name,
+        email: email,
+        password: invalidPassword,
+        isValid: false,
+      ),
+    ],
+  );
+  blocTest<SignUpCubit, SignUpState>(
+    'should be an invalid form due to invalid name',
+    build: () => SignUpCubit(
+      initialState: SignUpState().copyWith(
+        name: invalidName,
+        email: email,
+      ),
+    ),
+    act: (cubit) {
+      cubit.setPassword(password);
+    },
+    expect: () => [
+      SignUpState(
+        name: invalidName,
+        email: email,
+        password: password,
+        isValid: false,
+      ),
+    ],
+  );
+  blocTest<SignUpCubit, SignUpState>(
+    'should be an invalid form due to invalid email',
+    build: () => SignUpCubit(
+      initialState: SignUpState().copyWith(
+        name: name,
+        email: invalidEmail,
+      ),
+    ),
+    act: (cubit) {
+      cubit.setPassword(password);
+    },
+    expect: () => [
+      SignUpState(
+        name: name,
+        email: invalidEmail,
+        password: password,
+        isValid: false,
+      ),
+    ],
+  );
+}
