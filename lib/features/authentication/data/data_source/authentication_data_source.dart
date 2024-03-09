@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:bloc_login/core/error/exception.dart';
 import 'package:bloc_login/core/model/response_model.dart';
+import 'package:bloc_login/core/utils/constant.dart';
+import 'package:bloc_login/core/utils/helper_functions.dart';
 import 'package:bloc_login/features/authentication/data/model/user_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,25 +30,24 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
     required String email,
     required String password,
   }) async {
-    final apiUrl = "http://192.168.29.163:3000/login";
-    log("email: $email password: $password");
-    var body = jsonEncode(
-      {
-        "email": email,
-        "password": password,
-      },
-    );
-    log("body is: $body");
-    final response = await _client.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: body,
+    var body = {
+      "email": email,
+      "password": password,
+    };
+
+    final response = await postMethod(
+      _client,
+      loginUrl,
+      body,
     );
 
     log("login response: ${response.body}");
 
     var responseModel = ResponseModel<UserModel>.fromJson(
-        jsonDecode(response.body), UserModel.fromJson);
+      jsonDecode(response.body),
+      UserModel.fromJson,
+    );
+
     if (response.statusCode == 200) {
       return responseModel;
     } else {
@@ -60,20 +61,20 @@ class AuthenticationDataSourceImpl implements AuthenticationDataSource {
     required String password,
     required String name,
   }) async {
-    final apiUrl = "http://localhost:3000/signUp";
-    final response = await _client.post(
-      Uri.parse(apiUrl),
-      body: jsonEncode(
-        {
-          "email": email,
-          "password": password,
-          "name": name,
-        },
-      ),
+    final response = await postMethod(
+      _client,
+      signUpUrl,
+      {
+        "email": email,
+        "password": password,
+        "name": name,
+      },
     );
 
     var responseModel = ResponseModel<UserModel>.fromJson(
-        jsonDecode(response.body), UserModel.fromJson);
+      jsonDecode(response.body),
+      UserModel.fromJson,
+    );
     if (response.statusCode == 201) {
       return responseModel;
     } else {

@@ -26,6 +26,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(state.copyWith(user: user));
   }
 
+  setIsLoginPage(bool value) {
+    emit(state.copyWith(isLoginPage: value));
+  }
+
   Future<void> login({
     required String email,
     required String password,
@@ -52,11 +56,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }) async {
     var either = await _signUp(name: name, email: email, password: password);
     either.fold(
-        (l) => emit(state.copyWith(
-              error: l.error,
-              user: User.empty,
-            )),
-        (r) => emit(state.copyWith(user: r)));
+      (l) => emit(
+        state.copyWith(
+          error: l.error,
+        ),
+      ),
+      (r) => emit(
+        state.copyWith(user: r),
+      ),
+    );
   }
 
   void logout() {
